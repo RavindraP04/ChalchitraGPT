@@ -2,17 +2,82 @@ import { useRef, useState } from "react";
 import { LoginBg } from "../utils/constants";
 import Header from "./Header";
 import { validate } from "../utils/validate";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
-  const [isError, setIsError] = useState(null)
+  const [isError, setIsError] = useState(null);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const email = useRef(null);
   const password = useRef(null);
+  const name = useRef(null);
+
   const handleValidation = () => {
     const check = validate(email.current.value, password.current.value);
-    console.log(email)
-    setIsError(check)
+    setIsError(check);
+    if (check) return;
+
+    if (!isSignInForm) {
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+          updateProfile(user, {
+            displayName: name.current.value,
+            photoURL:
+              "https://avatars.githubusercontent.com/u/98400348?s=400&u=095cf205c3065609a9bef74f15fdb6cbde908254&v=4",
+          })
+            .then(() => {
+              const { uid, email, displayName, photoURL } = user;
+              dispatch(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
+                })
+              );
+              navigate("/browse");
+            })
+            .catch((error) => {
+              setIsError(error);
+            });
+          console.log(user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          setIsError(errorCode);
+        });
+    } else {
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log(user);
+          navigate("/browse");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          setIsError(errorCode);
+        });
+    }
   };
 
   const handleSignInSignUp = () => {
@@ -38,6 +103,7 @@ const Login = () => {
         </h1>
         {!isSignInForm && (
           <input
+            ref={name}
             className="bg-[#333333] px-5 py-3 border-none rounded-[4px] outline-none w-72 mb-4"
             type="text"
             placeholder="Full Name"

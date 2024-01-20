@@ -1,6 +1,24 @@
+import { signOut } from "firebase/auth";
+import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 const Header = () => {
+  const user = useSelector(store => store.user)
+  const navigate = useNavigate();
+
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        navigate("/");
+      })
+      .catch((error) => {
+        navigate("/error")
+      });
+  };
+
   return (
-    <div className="absolute z-10 px-12 py-6">
+    <div className="flex justify-between bg-gradient-to-b from-black w-screen absolute top-0 z-10 px-12 py-6">
       <svg
         viewBox="0 0 111 30"
         data-uia="netflix-logo"
@@ -15,6 +33,20 @@ const Header = () => {
           ></path>
         </g>
       </svg>
+      {user && (
+        <div className="flex flex-row items-center gap-3">
+          <div>
+            <img
+              className="w-10 rounded-full"
+              alt="userPhoto"
+              src={user?.photoURL}
+            />
+          </div>
+          <button onClick={handleSignOut} className="font-bold">
+            [Sign Out]
+          </button>
+        </div>
+      )}
     </div>
   );
 };
