@@ -41,7 +41,7 @@ const Header = () => {
   }, []);
 
   return (
-    <div className="flex justify-between bg-gradient-to-b from-black w-screen absolute top-0 z-10 px-12 py-6">
+    <div className="flex justify-between bg-gradient-to-b from-black w-full absolute top-0 z-10 px-12 py-6">
       <svg
         viewBox="0 0 111 30"
         data-uia="netflix-logo"

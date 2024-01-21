@@ -21,6 +21,12 @@
 - 21st Jan 2024
     - Register TMDB API & create and app & get access token 
     - Get Data from TMDB now playing movies list API
+    - custom hook to fetch Now Playing movies
+    - created movieSlice
+    - Planning for MainContainer and secondary container
+    - fetch data for trailer video
+    - updated store store with trailer video data
+    - Embedded the youtube video trailer of movie and made it autoplay in loop 
 
 
 # Features
