@@ -2,10 +2,11 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { addUser, removeUser } from "../utils/userSlice";
 
 const Header = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
   const user = useSelector((store) => store.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -18,7 +19,13 @@ const Header = () => {
       });
   };
 
+  const handleScroll = () => {
+    const scrolled = window.scrollY > 100;
+    setIsScrolled(scrolled);
+  };
+
   useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         const { uid, email, displayName, photoURL } = user;
@@ -37,15 +44,22 @@ const Header = () => {
       }
     });
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   return (
-    <div className="flex justify-between bg-gradient-to-b from-black w-full absolute top-0 z-10 px-12 py-6">
+    <div
+      className={`flex justify-between ${
+        isScrolled ? "bg-black" : "bg-gradient-to-b from-black"
+      } w-full fixed top-0 z-30 px-12 py-4`}
+    >
       <svg
         viewBox="0 0 111 30"
         data-uia="netflix-logo"
-        className="svg-icon svg-icon-netflix-logo fill-red-600 brightness-105 contrast-125 w-44"
+        className="svg-icon svg-icon-netflix-logo fill-red-600 brightness-105 contrast-125 w-24"
         aria-hidden="true"
         focusable="false"
       >
@@ -60,7 +74,7 @@ const Header = () => {
         <div className="flex flex-row items-center gap-3">
           <div>
             <img
-              className="w-10 rounded-full"
+              className="w-9 rounded-lg"
               alt="userPhoto"
               src={user?.photoURL}
             />
