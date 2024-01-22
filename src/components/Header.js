@@ -4,10 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { addUser, removeUser } from "../utils/userSlice";
+import { addToggleGptSearch } from "../utils/gptSlice";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const user = useSelector((store) => store.user);
+  const gptToggle = useSelector((store) => store.gptSearch);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -22,6 +24,10 @@ const Header = () => {
   const handleScroll = () => {
     const scrolled = window.scrollY > 100;
     setIsScrolled(scrolled);
+  };
+
+  const handleToggleGptSearch = () => {
+    dispatch(addToggleGptSearch());
   };
 
   useEffect(() => {
@@ -72,6 +78,12 @@ const Header = () => {
       </svg>
       {user && (
         <div className="flex flex-row items-center gap-3">
+          <button
+            onClick={handleToggleGptSearch}
+            className="py-2 px-4 text-sm font-bold bg-purple-800 text-white rounded-md active:scale-95"
+          >
+            {gptToggle.toggleGptSearch ? "Movies" : "GPT Search"}
+          </button>
           <div>
             <img
               className="w-9 rounded-lg"
