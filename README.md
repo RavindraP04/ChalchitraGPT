@@ -26,7 +26,14 @@
     - Planning for MainContainer and secondary container
     - fetch data for trailer video
     - updated store store with trailer video data
-    - Embedded the youtube video trailer of movie and made it autoplay in loop 
+    - Embedded the youtube video trailer of movie and made it autoplay in loop
+- 22nd Jan 2024
+    - Build Secondary component
+    - Build Movie List 
+    - Build Movie card
+    - TMDB Image CDN URL
+    - Made the Browser page amazing with Tailwind CSS
+    - added more custom hooks for popular, upcoming and top rated movies
 
 
 # Features
