@@ -38,3 +38,7 @@
   background: #41414194;
   border-radius: 10px;
 }
+
+.text-shadow{
+  text-shadow: 0px 0px 10px #d2c6c6;
+}
