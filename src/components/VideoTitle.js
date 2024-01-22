@@ -1,8 +1,8 @@
 const VideoTitle = ({ overview, title }) => {
   return (
     <div className="w-full aspect-video absolute pt-[25%] pl-14 bg-gradient-to-r from-black text-white">
-      <h1 className="text-6xl font-bold">{title}</h1>
-      <p className="w-[35%] text-lg pt-5">{overview}</p>
+      <h1 className="select-none cursor-default text-6xl font-bold">{title}</h1>
+      <p className="select-none cursor-default w-[35%] text-lg pt-5">{overview}</p>
       <div className="mt-5 flex flex-row gap-3">
         <button className=" bg-white flex flex-row px-8 py-2 justify-center items-center gap-2 text-black text-lg rounded-md hover:bg-opacity-80">
           <svg
