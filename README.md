@@ -37,7 +37,15 @@
 - 23rd Jan 2024
     - GPT Search Page
     - GPT Search Bar
-    - Multiligual Feature 
+    - Multiligual Feature
+    - Get Open AI Api Key
+    - Gpt Search API Call
+    - fetched gptMoviesSuggestions from TMDB
+    - created gptSlice added data
+    - Resused Movie List component to make movie suggestion container
+    - Memoization to reduce unnecessary api call when already data is loaded in store
+    - Added .env file
+    - Adding .env file to gitignore
 
 
 # Features

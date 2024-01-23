@@ -1,7 +1,6 @@
 import MovieCard from "./MovieCard";
 
 const MovieCategory = ({ title, data }) => {
-  console.log(data);
   return (
     <div className="mx-14 mt-10 ">
       <h1 className="text-xl pb-4 font-bold">{title}</h1>
