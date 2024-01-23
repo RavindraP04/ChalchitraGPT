@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { addUser, removeUser } from "../utils/userSlice";
 import { addToggleGptSearch } from "../utils/gptSlice";
+import { SUPPORTED_LANGUAGES } from "../utils/constants";
+import { changeLanguage } from "../utils/configSlice";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -28,6 +30,10 @@ const Header = () => {
 
   const handleToggleGptSearch = () => {
     dispatch(addToggleGptSearch());
+  };
+
+  const handleLanguageChange = (e) => {
+    dispatch(changeLanguage(e.target.value));
   };
 
   useEffect(() => {
@@ -78,11 +84,23 @@ const Header = () => {
       </svg>
       {user && (
         <div className="flex flex-row items-center gap-3">
+          {gptToggle.toggleGptSearch && (
+            <select
+              onChange={handleLanguageChange}
+              className="outline-none p-2 bg-gray-900 text-white m-2"
+            >
+              {SUPPORTED_LANGUAGES.map((lang) => (
+                <option key={lang.identifier} value={lang.identifier}>
+                  {lang.name}
+                </option>
+              ))}
+            </select>
+          )}
           <button
             onClick={handleToggleGptSearch}
             className="py-2 px-4 text-sm font-bold bg-purple-800 text-white rounded-md active:scale-95"
           >
-            {gptToggle.toggleGptSearch ? "Movies" : "GPT Search"}
+            {gptToggle.toggleGptSearch ? "Home Page" : "GPT Search"}
           </button>
           <div>
             <img

@@ -35,7 +35,9 @@
     - Made the Browser page amazing with Tailwind CSS
     - added more custom hooks for popular, upcoming and top rated movies
 - 23rd Jan 2024
-    - GPT Search Feature
+    - GPT Search Page
+    - GPT Search Bar
+    - Multiligual Feature 
 
 
 # Features
