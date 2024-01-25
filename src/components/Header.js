@@ -6,12 +6,13 @@ import { useEffect, useState } from "react";
 import { addUser, removeUser } from "../utils/userSlice";
 import { addToggleGptSearch } from "../utils/gptSlice";
 import { SUPPORTED_LANGUAGES } from "../utils/constants";
-import { changeLanguage } from "../utils/configSlice";
+import { changeLanguage, toggleDropdown } from "../utils/configSlice";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const user = useSelector((store) => store.user);
   const gptToggle = useSelector((store) => store.gptSearch);
+  const dropdown = useSelector((store) => store.config.dropdown);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -27,6 +28,10 @@ const Header = () => {
     const scrolled = window.scrollY > 100;
     setIsScrolled(scrolled);
   };
+  
+  const handleDropdown = () => {
+    dispatch(toggleDropdown());
+  };
 
   const handleToggleGptSearch = () => {
     dispatch(addToggleGptSearch());
@@ -35,6 +40,7 @@ const Header = () => {
   const handleLanguageChange = (e) => {
     dispatch(changeLanguage(e.target.value));
   };
+
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -66,12 +72,14 @@ const Header = () => {
     <div
       className={`flex justify-between ${
         isScrolled ? "bg-black" : "bg-gradient-to-b from-black"
-      } w-full fixed top-0 z-30 px-12 py-4`}
+      } w-full fixed top-0 z-30 py-4 sm:px-12 px-4`}
     >
       <svg
         viewBox="0 0 111 30"
         data-uia="netflix-logo"
-        className="svg-icon svg-icon-netflix-logo fill-red-600 brightness-105 contrast-125 w-24"
+        className={`svg-icon svg-icon-netflix-logo fill-red-600 sm:mx-0 brightness-105 contrast-125 ${
+          user ? "w-24" : "mx-auto sm:w-36 w-32"
+        }`}
         aria-hidden="true"
         focusable="false"
       >
@@ -96,22 +104,98 @@ const Header = () => {
               ))}
             </select>
           )}
-          <button
-            onClick={handleToggleGptSearch}
-            className="py-2 px-4 text-sm font-bold bg-purple-800 text-white rounded-md active:scale-95"
-          >
-            {gptToggle.toggleGptSearch ? "Home Page" : "GPT Search"}
-          </button>
-          <div>
-            <img
-              className="w-9 rounded-lg"
-              alt="userPhoto"
-              src={user?.photoURL}
-            />
+          {!dropdown && (
+            <button
+              onClick={handleToggleGptSearch}
+              className="py-2 hidden sm:block px-4 text-sm font-bold bg-purple-800 text-white rounded-md active:scale-95"
+            >
+              {gptToggle.toggleGptSearch ? "Home Page" : "GPT Search"}
+            </button>
+          )}
+          <div onClick={handleDropdown} className="relative">
+            <div className="flex text-white cursor-pointer items-center gap-1">
+              <img
+                className="w-9 rounded-lg"
+                alt="userPhoto"
+                src={user?.photoURL}
+              />
+              {dropdown ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={4}
+                  stroke="currentColor"
+                  className="w-3 h-3"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m4.5 15.75 7.5-7.5 7.5 7.5"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={4}
+                  stroke="currentColor"
+                  className="w-3 h-3"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                  />
+                </svg>
+              )}
+            </div>
+            {dropdown && (
+              <div className="absolute top-10 right-0 flex flex-col rounded-md bg-white border border-black p-1 gap-1">
+                <button
+                  onClick={handleToggleGptSearch}
+                  className="py-2 flex whitespace-nowrap justify-start items-center gap-2 px-4 text-sm font-bold bg-purple-800 text-white rounded-md active:scale-95"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-4 h-4"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                    />
+                  </svg>
+                  {gptToggle.toggleGptSearch ? "Home Page" : "GPT Search"}
+                </button>
+                <button
+                  onClick={handleSignOut}
+                  className="border border-black whitespace-nowrap text-sm font-extrabold rounded-md bg-white flex justify-start px-4 items-center gap-3 py-2 text-black"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-5 h-5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
+                    />
+                  </svg>
+                  Sign Out
+                </button>
+              </div>
+            )}
           </div>
-          <button onClick={handleSignOut} className="font-bold text-white">
-            [Sign Out]
-          </button>
         </div>
       )}
     </div>

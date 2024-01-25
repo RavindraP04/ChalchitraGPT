@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useNowPlayingMovies from "../Hooks/useNowPlayingMovies";
 import usePopularMovies from "../Hooks/usePopularMovies";
 import useTopRatedMovies from "../Hooks/useTopRatedMovies";
@@ -7,12 +7,20 @@ import GptSearchContainer from "./GptSearchContainer";
 import Header from "./Header";
 import MainContainer from "./MainContainer";
 import SecondaryContainer from "./SecondaryContainer";
+import { toggleDropdown } from "../utils/configSlice";
 
 const Browse = () => {
   useNowPlayingMovies();
   usePopularMovies();
   useTopRatedMovies();
   useUpcomingMovies();
+  const dispatch = useDispatch();
+  const dropdown = useSelector((store) => store.config.dropdown);
+  const dropdownClose = () => {
+    if (dropdown) {
+      dispatch(toggleDropdown());
+    }
+  };
 
   const gptToggle = useSelector((store) => store.gptSearch);
 
@@ -20,9 +28,11 @@ const Browse = () => {
     <div>
       <Header />
       {gptToggle.toggleGptSearch ? (
-        <GptSearchContainer />
+        <div onClick={dropdownClose}>
+          <GptSearchContainer />
+        </div>
       ) : (
-        <div>
+        <div onClick={dropdownClose}>
           <MainContainer />
           <SecondaryContainer />
         </div>
