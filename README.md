@@ -46,6 +46,8 @@
     - Memoization to reduce unnecessary api call when already data is loaded in store
     - Added .env file
     - Adding .env file to gitignore
+- 25th Jan 2023
+    - Full website is not mobile responsive
 
 
 # Features
