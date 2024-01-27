@@ -42,3 +42,22 @@
 .text-shadow{
   text-shadow: 0px 0px 10px #d2c6c6;
 }
+
+.blur-transition-Modal-foreground {
+  opacity: 0;
+  animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+.blur-transition-Modal-background {
+  opacity: 0;
+  animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

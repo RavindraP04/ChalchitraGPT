@@ -7,7 +7,7 @@ const MovieCategory = ({ title, data, css }) => {
       <div className="custom-scrollbar flex overflow-x-scroll">
         <div className="flex flex-row">
           {data?.map((movie) => (
-            <MovieCard key={movie.id} title={title} poster={movie.poster_path} name={movie.title} />
+            <MovieCard key={movie.id} id={movie.id} movieData={movie} title={title} poster={movie.poster_path} name={movie.title} />
           ))}
         </div>
       </div>
