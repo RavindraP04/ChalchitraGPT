@@ -1,17 +1,29 @@
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { POSTER_CDN_URL_HD } from "../utils/constants";
-import VideoTitle from "./VideoTitle";
+import useDetailedMovieData from "../Hooks/useDetailedMovieData";
+import { useDispatch, useSelector } from "react-redux";
+import { addDetailedMovieData } from "../utils/moviesSlice";
 
 const MoviePreviewModal = ({ name, id, closeModal, movieData }) => {
+  useDetailedMovieData(id);
   const modalRoot = document.getElementById("modal-root");
   const modalRefFg = useRef(null);
   const modalRefBg = useRef(null);
-  console.log(movieData);
+  const getMovieDetails = useSelector(
+    (store) => store?.movies?.detailedMovieData
+  );
+  const dispatch = useDispatch();
+  
+  const genres = getMovieDetails?.genres.map(ele => ele.name)
 
   useEffect(() => {
     modalRefFg.current.classList.add("blur-transition-Modal-foreground");
     modalRefBg.current.classList.add("blur-transition-Modal-background");
+
+    return () => {
+      dispatch(addDetailedMovieData(null))
+    }
   }, []);
 
   return createPortal(
@@ -33,9 +45,9 @@ const MoviePreviewModal = ({ name, id, closeModal, movieData }) => {
               src={POSTER_CDN_URL_HD + movieData?.backdrop_path}
             />
           </div>
-          <div className="bg-black/70 absolute top-0 z-10 h-full w-full"></div>
+          <div className="bg-black/60 absolute top-0 z-10 h-full w-full"></div>
           <div className="absolute top-10 grid grid-cols-12 w-full h-fit z-20">
-            <div className="col-span-3 justify-self-end">
+            <div className="col-span-3 relative left-5 justify-self-end">
               <img
                 className="w-72 rounded-md"
                 src={POSTER_CDN_URL_HD + movieData?.poster_path}
@@ -54,7 +66,7 @@ const MoviePreviewModal = ({ name, id, closeModal, movieData }) => {
                     {movieData?.release_date.split("-").reverse().join("/")}
                   </p>
                   <span>•</span>
-                  <p>Action,Adventure,Fantasy</p>
+                  <p>{genres ? genres.join(", ") : ""}</p>
                 </div>
               </div>
 
