@@ -72,7 +72,7 @@ const GptSearchBar = () => {
           />
           <button
             onClick={handleGptSearch}
-            className="flex justify-center absolute right-1 top-1 sm:right-auto sm:top-auto sm:relative col-span-0 sm:col-span-3 m-4 py-1 px-1 bg-red-700 text-white rounded-md"
+            className="flex justify-center items-center absolute right-1 top-1 sm:right-auto sm:top-auto sm:relative col-span-0 sm:col-span-3 m-4 py-1 px-1 bg-red-700 text-white rounded-md"
           >
             <span className="flex flex-row items-center gap-2 flex-nowrap">
               <span className="hidden sm:block">

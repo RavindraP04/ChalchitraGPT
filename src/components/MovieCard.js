@@ -1,16 +1,21 @@
 import { useState } from "react";
 import { POSTER_CDN_URL } from "../utils/constants";
 import MoviePreviewModal from "./MoviePreviewModal";
+import { useDispatch } from "react-redux";
+import { modalOpen } from "../utils/configSlice";
 
 const MovieCard = ({ id, title, poster, name, movieData }) => {
   const [showModal, setShowModal] = useState(false);
+  const dispatch = useDispatch();
 
   const handleCloseModal = () => {
+    dispatch(modalOpen())
     setShowModal(!showModal);
     document.body.style.overflowY = "scroll";
   };
 
   const handleOpenModal = () => {
+    dispatch(modalOpen())
     setShowModal(!showModal);
     document.body.style.overflowY = "hidden";
   };

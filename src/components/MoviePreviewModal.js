@@ -1,29 +1,38 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { POSTER_CDN_URL_HD } from "../utils/constants";
 import useDetailedMovieData from "../Hooks/useDetailedMovieData";
 import { useDispatch, useSelector } from "react-redux";
 import { addDetailedMovieData } from "../utils/moviesSlice";
+import useTrailerModal from "../Hooks/useTrailerModal";
+import VideoBackground from "./VideoBackground";
+import "@fontsource/inter";
+import Modal from "@mui/joy/Modal";
+import { ModalClose } from "@mui/joy";
 
 const MoviePreviewModal = ({ name, id, closeModal, movieData }) => {
+  const [open, setOpen] = useState(false);
+  useTrailerModal(id);
   useDetailedMovieData(id);
+
   const modalRoot = document.getElementById("modal-root");
   const modalRefFg = useRef(null);
   const modalRefBg = useRef(null);
+
   const getMovieDetails = useSelector(
     (store) => store?.movies?.detailedMovieData
   );
   const dispatch = useDispatch();
-  
-  const genres = getMovieDetails?.genres.map(ele => ele.name)
+
+  const genres = getMovieDetails?.genres.map((ele) => ele.name);
 
   useEffect(() => {
     modalRefFg.current.classList.add("blur-transition-Modal-foreground");
     modalRefBg.current.classList.add("blur-transition-Modal-background");
 
     return () => {
-      dispatch(addDetailedMovieData(null))
-    }
+      dispatch(addDetailedMovieData(null));
+    };
   }, []);
 
   return createPortal(
@@ -137,7 +146,10 @@ const MoviePreviewModal = ({ name, id, closeModal, movieData }) => {
               </div>
 
               <div className="mt-2 sm:mt-5 flex flex-row gap-3">
-                <button className=" bg-white flex flex-row p-1 sm:p-0 sm:px-8 sm:py-2 justify-center items-center gap-2 text-black text-xs font-bold sm:font-normal sm:text-lg rounded-md hover:bg-opacity-80">
+                <button
+                  onClick={() => setOpen(true)}
+                  className=" bg-white flex flex-row p-1 sm:p-0 sm:px-8 sm:py-2 justify-center items-center gap-2 text-black text-xs font-bold sm:font-normal sm:text-lg rounded-md hover:bg-opacity-80"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="#000"
@@ -174,6 +186,14 @@ const MoviePreviewModal = ({ name, id, closeModal, movieData }) => {
               </div>
             </div>
           </div>
+          <Modal className="flex items-center justify-center" open={open} onClose={() => setOpen(false)}>
+            <div className="w-[80vw]">
+              <ModalClose />
+              <div>
+                <VideoBackground movieId={id} type={"trailerModal"} />
+              </div>
+            </div>
+          </Modal>
         </div>
 
         <button
