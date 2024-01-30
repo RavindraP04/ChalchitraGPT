@@ -1,14 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
-import { API_OPTIONS, LoginBg } from "../utils/constants";
+import { API_OPTIONS, LoginBg, whenEmptyGptInput } from "../utils/constants";
 import lang from "../utils/languageConstants";
 import openai from "../utils/openai";
 import { useRef } from "react";
 import { addMovieSearchResult } from "../utils/gptSlice";
+import { changeGif } from "../utils/configSlice";
 
 const GptSearchBar = () => {
   const userInput = useRef();
   const currentLanguage = useSelector((store) => store.config.lang);
   const dispatch = useDispatch();
+  const stateCheck = useSelector((store) => store.config.gifImage);
 
   const getMovieResultfromTMDM = async (movie) => {
     const data = await fetch(
@@ -21,33 +23,39 @@ const GptSearchBar = () => {
     return json.results;
   };
 
-  const handleGptSearch = async () => {
-    const gptQuery =
-      "Act as a Movie Recommendation system and suggest some movies for the query: " +
-      userInput.current.value +
-      ". only give me names of 5 movies, comma seperated like the example result given ahead. Example Result: Gadar, Sholay, Don, Golmaal, Koi Mil Gaya";
-    const responseList = await openai.chat.completions.create({
-      messages: [{ role: "user", content: gptQuery }],
-      model: "gpt-3.5-turbo",
-    });
-    if (!responseList.choices) {
-      console.log("Let me think for a sec.");
+  const handleGptSearch = () => {
+    if (userInput.current.value == "") {
+      dispatch(changeGif(whenEmptyGptInput));
+      console.log("New State:", stateCheck);
+      return;
     }
+    // const gptQuery =
+    //   "Act as a Movie Recommendation system and suggest some movies for the query: " +
+    //   userInput.current.value +
+    //   ". only give me names of 5 movies, comma seperated like the example result given ahead. Example Result: Gadar, Sholay, Don, Golmaal, Koi Mil Gaya";
 
-    const GptMovieResult =
-      responseList.choices?.[0]?.message?.content.split(",");
+    // const responseList = await openai.chat.completions.create({
+    //   messages: [{ role: "user", content: gptQuery }],
+    //   model: "gpt-3.5-turbo",
+    // });
+    // if (!responseList.choices) {
+    //   console.log("Let me think for a sec.");
+    // }
 
-    const finalMovieListPromise = GptMovieResult.map((movie) =>
-      getMovieResultfromTMDM(movie)
-    );
-    const tmdbResults = await Promise.all(finalMovieListPromise);
+    // const GptMovieResult =
+    //   responseList.choices?.[0]?.message?.content.split(",");
 
-    dispatch(
-      addMovieSearchResult({
-        gptMovieResult: GptMovieResult,
-        tmdbMovieResult: tmdbResults,
-      })
-    );
+    // const finalMovieListPromise = GptMovieResult.map((movie) =>
+    //   getMovieResultfromTMDM(movie)
+    // );
+    // const tmdbResults = await Promise.all(finalMovieListPromise);
+
+    // dispatch(
+    //   addMovieSearchResult({
+    //     gptMovieResult: GptMovieResult,
+    //     tmdbMovieResult: tmdbResults,
+    //   })
+    // );
   };
 
   return (

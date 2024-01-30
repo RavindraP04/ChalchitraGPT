@@ -7,6 +7,7 @@ const configSlice = createSlice({
     dropdown: false,
     mute: true,
     modalOpen: false,
+    gifImage: "",
   },
   reducers: {
     changeLanguage: (state, action) => {
@@ -21,9 +22,12 @@ const configSlice = createSlice({
     modalOpen: (state, action) => {
       state.modalOpen = !state.modalOpen;
     },
+    changeGif: (state, action) => {
+      state.gifImage = action.payload;
+    },
   },
 });
 
-export const { changeLanguage, toggleDropdown, toggleMute, modalOpen } =
+export const { changeLanguage, toggleDropdown, toggleMute, modalOpen, changeGif } =
   configSlice.actions;
 export default configSlice.reducer;
