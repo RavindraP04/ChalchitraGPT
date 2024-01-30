@@ -1,61 +1,38 @@
 import { useDispatch, useSelector } from "react-redux";
-import { API_OPTIONS, LoginBg, whenEmptyGptInput } from "../utils/constants";
+import {
+  LoginBg,
+  waitingForResponse,
+  whenEmptyGptInput,
+} from "../utils/constants";
 import lang from "../utils/languageConstants";
-import openai from "../utils/openai";
 import { useRef } from "react";
-import { addMovieSearchResult } from "../utils/gptSlice";
 import { changeGif } from "../utils/configSlice";
+import useMovieSearch from "../Hooks/useMovieSearch";
+import { addMovieSearchResult } from "../utils/gptSlice";
 
 const GptSearchBar = () => {
   const userInput = useRef();
   const currentLanguage = useSelector((store) => store.config.lang);
   const dispatch = useDispatch();
-  const stateCheck = useSelector((store) => store.config.gifImage);
 
-  const getMovieResultfromTMDM = async (movie) => {
-    const data = await fetch(
-      "https://api.themoviedb.org/3/search/movie?query=" +
-        movie +
-        "&include_adult=false&language=en-US&page=1",
-      API_OPTIONS
+  const { handleGptSearch, loading } = useMovieSearch(dispatch);
+
+  if (loading) {
+    dispatch(changeGif(waitingForResponse));
+  }
+
+  const onSearchClick = async () => {
+    dispatch(
+      addMovieSearchResult({
+        gptMovieResult: null,
+        tmdbMovieResult: null,
+      })
     );
-    const json = await data.json();
-    return json.results;
-  };
-
-  const handleGptSearch = () => {
-    if (userInput.current.value == "") {
+    if (userInput.current.value === "") {
       dispatch(changeGif(whenEmptyGptInput));
-      console.log("New State:", stateCheck);
       return;
     }
-    // const gptQuery =
-    //   "Act as a Movie Recommendation system and suggest some movies for the query: " +
-    //   userInput.current.value +
-    //   ". only give me names of 5 movies, comma seperated like the example result given ahead. Example Result: Gadar, Sholay, Don, Golmaal, Koi Mil Gaya";
-
-    // const responseList = await openai.chat.completions.create({
-    //   messages: [{ role: "user", content: gptQuery }],
-    //   model: "gpt-3.5-turbo",
-    // });
-    // if (!responseList.choices) {
-    //   console.log("Let me think for a sec.");
-    // }
-
-    // const GptMovieResult =
-    //   responseList.choices?.[0]?.message?.content.split(",");
-
-    // const finalMovieListPromise = GptMovieResult.map((movie) =>
-    //   getMovieResultfromTMDM(movie)
-    // );
-    // const tmdbResults = await Promise.all(finalMovieListPromise);
-
-    // dispatch(
-    //   addMovieSearchResult({
-    //     gptMovieResult: GptMovieResult,
-    //     tmdbMovieResult: tmdbResults,
-    //   })
-    // );
+    await handleGptSearch(userInput.current.value, dispatch);
   };
 
   return (
@@ -73,18 +50,20 @@ const GptSearchBar = () => {
           className="bg-black bg-opacity-80 mx-5 relative sm:mx-0 rounded-md w-screen sm:w-1/2 grid grid-cols-12"
         >
           <input
+            disabled={loading}
             ref={userInput}
             className="p-4 m-4 h-10 sm:h-auto pr-[50px] outline-none rounded-md col-span-12 sm:col-span-9"
             type="text"
             placeholder={lang?.[currentLanguage]?.gptSearchPlaceholder}
           />
           <button
-            onClick={handleGptSearch}
+            disabled={loading}
+            onClick={onSearchClick}
             className="flex justify-center items-center absolute right-1 top-1 sm:right-auto sm:top-auto sm:relative col-span-0 sm:col-span-3 m-4 py-1 px-1 bg-red-700 text-white rounded-md"
           >
             <span className="flex flex-row items-center gap-2 flex-nowrap">
               <span className="hidden sm:block">
-                {lang?.[currentLanguage]?.search}
+                {loading ? "Searching..." : lang?.[currentLanguage]?.search}
               </span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"

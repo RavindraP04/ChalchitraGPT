@@ -27,8 +27,13 @@ export const SUPPORTED_LANGUAGES = [
   },
 ];
 
-export const OPENAI_KEY = process.env.REACT_APP_OPENAI_KEY
+export const OPENAI_KEY = process.env.REACT_APP_OPENAI_KEY;
 
-export const thinkingBunny = "https://media1.tenor.com/m/eomT2hRxUYIAAAAC/pooh-think.gif";
+export const thinkingBunny =
+  "https://media1.tenor.com/m/eomT2hRxUYIAAAAC/pooh-think.gif";
 
-export const whenEmptyGptInput = "https://media1.tenor.com/m/szIcaP5lTNQAAAAd/kuch-na-kuch-likhna-to-padega-atmaram-tukaram-bhide.gif";
+export const whenEmptyGptInput =
+  "https://media1.tenor.com/m/szIcaP5lTNQAAAAd/kuch-na-kuch-likhna-to-padega-atmaram-tukaram-bhide.gif";
+
+export const waitingForResponse =
+  "https://media1.tenor.com/m/uI3y480lTIwAAAAd/dhamaal-vijay-raaz-atc-commentary-scene.gif";
