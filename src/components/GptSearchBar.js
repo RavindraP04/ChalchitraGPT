@@ -28,10 +28,11 @@ const GptSearchBar = () => {
         tmdbMovieResult: null,
       })
     );
-    if (userInput.current.value === "") {
+    if (!userInput.current || userInput.current.value === "") {
       dispatch(changeGif(whenEmptyGptInput));
       return;
     }
+    dispatch(changeGif(waitingForResponse));
     await handleGptSearch(userInput.current.value, dispatch);
   };
 
