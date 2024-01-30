@@ -1,12 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import MovieCategory from "./MovieCategory";
-import { thinkingBunny, waitingForResponse } from "../utils/constants";
+import { thinkingBunny } from "../utils/constants";
 import { changeGif } from "../utils/configSlice";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const GptMovieSuggestion = () => {
   const dispatch = useDispatch();
-  const [shouldRenderMovies, setShouldRenderMovies] = useState(false);
   const { gptMovieResult, tmdbMovieResult } = useSelector(
     (store) => store.gptSearch
   );
