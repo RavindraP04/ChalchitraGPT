@@ -25,7 +25,6 @@ const MovieCard = ({ id, title, poster, name, movieData }) => {
     <div>
       {showModal && (
         <MoviePreviewModal
-          name={name}
           movieData={movieData}
           id={id}
           closeModal={handleCloseModal}

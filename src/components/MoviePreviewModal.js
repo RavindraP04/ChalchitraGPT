@@ -10,7 +10,7 @@ import "@fontsource/inter";
 import Modal from "@mui/joy/Modal";
 import { ModalClose } from "@mui/joy";
 
-const MoviePreviewModal = ({ name, id, closeModal, movieData }) => {
+const MoviePreviewModal = ({ id, closeModal, movieData }) => {
   const [open, setOpen] = useState(false);
   useTrailerModal(id);
   useDetailedMovieData(id);
