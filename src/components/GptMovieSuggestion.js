@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import MovieCategory from "./MovieCategory";
-import { thinkingBunny } from "../utils/constants";
+import { idk, thinkingBunny } from "../utils/constants";
 import { changeGif } from "../utils/configSlice";
 import { useEffect } from "react";
 
@@ -15,9 +15,13 @@ const GptMovieSuggestion = () => {
     dispatch(changeGif(thinkingBunny));
   }, []);
 
+  if(gptMovieResult && tmdbMovieResult[0].length == 0){
+    dispatch(changeGif(idk))
+  }
+
   return (
     <div className="text-white bg-black m-5 rounded-md sm:m-12 min-h-96 bg-opacity-80">
-      {gptMovieResult ? (
+      {gptMovieResult && tmdbMovieResult[0].length !== 0 ? (
         gptMovieResult.map((movie, index) => (
           <MovieCategory
             css={

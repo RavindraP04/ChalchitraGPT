@@ -8,12 +8,17 @@ import Header from "./Header";
 import MainContainer from "./MainContainer";
 import SecondaryContainer from "./SecondaryContainer";
 import { toggleDropdown } from "../utils/configSlice";
+import Loader from "./Loader";
 
 const Browse = () => {
+  const nowPlayingMovies = useSelector(
+    (store) => store.movies.nowPlayingMovies
+  );
   useNowPlayingMovies();
   usePopularMovies();
   useTopRatedMovies();
   useUpcomingMovies();
+
   const dispatch = useDispatch();
   const dropdown = useSelector((store) => store.config.dropdown);
   const dropdownClose = () => {
@@ -26,6 +31,7 @@ const Browse = () => {
 
   return (
     <div>
+      {!nowPlayingMovies && <Loader />}
       <Header />
       {gptToggle.toggleGptSearch ? (
         <div onClick={dropdownClose}>

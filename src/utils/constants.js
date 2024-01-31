@@ -37,3 +37,6 @@ export const whenEmptyGptInput =
 
 export const waitingForResponse =
   "https://media1.tenor.com/m/uI3y480lTIwAAAAd/dhamaal-vijay-raaz-atc-commentary-scene.gif";
+
+export const idk =
+  "https://media1.tenor.com/m/-jieBxy9TJ4AAAAC/mein-nahi-bataunga-johnny-lever.gif";

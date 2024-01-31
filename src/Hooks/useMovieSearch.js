@@ -16,33 +16,36 @@ const useMovieSearch = (dispatch) => {
     return json.results;
   };
 
-  const handleGptSearch = useCallback(async (userInputValue) => {
-    setLoading(true);
+  const handleGptSearch = useCallback(
+    async (userInputValue) => {
+      setLoading(true);
 
-    const gptQuery = `Act as a Movie Recommendation system and suggest some movies for the query: ${userInputValue}. only give me names of 5 movies, comma separated like the example result given ahead. Example Result: Gadar, Sholay, Don, Golmaal, Koi Mil Gaya`;
+      const gptQuery = `Act as a Movie Recommendation system and suggest some movies for the query: ${userInputValue}. only give me names of 5 movies, comma separated like the example result given ahead. Example Result: Gadar, Sholay, Don, Golmaal, Koi Mil Gaya and If for any reason you can't suggest movies then just reply "sorrybro"`;
 
-    const responseList = await openai.chat.completions.create({
-      messages: [{ role: "user", content: gptQuery }],
-      model: "gpt-3.5-turbo",
-    });
+      const responseList = await openai.chat.completions.create({
+        messages: [{ role: "user", content: gptQuery }],
+        model: "gpt-3.5-turbo",
+      });
 
-    const GptMovieResult =
-      responseList.choices?.[0]?.message?.content.split(",");
+      const GptMovieResult =
+        responseList.choices?.[0]?.message?.content.split(",");
 
-    const finalMovieListPromise = GptMovieResult.map((movie) =>
-      getMovieResultfromTMDM(movie)
-    );
-    const tmdbResults = await Promise.all(finalMovieListPromise);
+      const finalMovieListPromise = GptMovieResult.map((movie) =>
+        getMovieResultfromTMDM(movie)
+      );
+      const tmdbResults = await Promise.all(finalMovieListPromise);
 
-    dispatch(
-      addMovieSearchResult({
-        gptMovieResult: GptMovieResult,
-        tmdbMovieResult: tmdbResults,
-      })
-    );
+      dispatch(
+        addMovieSearchResult({
+          gptMovieResult: GptMovieResult,
+          tmdbMovieResult: tmdbResults,
+        })
+      );
 
-    setLoading(false);
-  }, [dispatch]);
+      setLoading(false);
+    },
+    [dispatch]
+  );
 
   return { handleGptSearch, loading };
 };
