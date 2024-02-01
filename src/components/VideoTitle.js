@@ -4,14 +4,15 @@ import { Modal, ModalClose } from "@mui/joy";
 import VideoBackground from "./VideoBackground";
 import { useState } from "react";
 
-const VideoTitle = ({ overview, title }) => {
+const VideoTitle = ({ movie, overview, title }) => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const mute = useSelector((store) => store.config.mute);
   const handleMuteToggle = () => {
     dispatch(toggleMute());
   };
-  
+  const { id } = movie;
+
   const handleOpenTrailerModal = () => {
     setOpen(true);
     dispatch(modalOpen());
@@ -121,7 +122,7 @@ const VideoTitle = ({ overview, title }) => {
           <div className="w-[80vw]">
             <ModalClose />
             <div>
-              <VideoBackground movieId={572802} type={"trailerModal"} />
+              <VideoBackground movieId={id} type={"trailerModal"} />
             </div>
           </div>
         </Modal>

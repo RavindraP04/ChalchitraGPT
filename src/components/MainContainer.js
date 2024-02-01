@@ -12,7 +12,7 @@ const MainContainer = () => {
 
   return (
     <div className="relative bg-black pt-10 sm:pt-0 w-full aspect-video">
-      <VideoTitle overview={overview} title={title} />
+      <VideoTitle movie={movie} overview={overview} title={title} />
       {!modalOpen && (
         <VideoBackground movieId={id} type={"browsePageMainTrailer"} />
       )}
