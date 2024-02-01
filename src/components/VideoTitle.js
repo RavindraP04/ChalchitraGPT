@@ -3,9 +3,11 @@ import { modalOpen, toggleMute } from "../utils/configSlice";
 import { Modal, ModalClose } from "@mui/joy";
 import VideoBackground from "./VideoBackground";
 import { useState } from "react";
+import MoviePreviewModal from "./MoviePreviewModal";
 
 const VideoTitle = ({ movie, overview, title }) => {
   const [open, setOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
   const mute = useSelector((store) => store.config.mute);
   const handleMuteToggle = () => {
@@ -23,8 +25,27 @@ const VideoTitle = ({ movie, overview, title }) => {
     dispatch(modalOpen());
   };
 
+  const handleCloseModal = () => {
+    dispatch(modalOpen())
+    setShowModal(!showModal);
+    document.body.style.overflowY = "scroll";
+  };
+
+  const handleOpenModal = () => {
+    dispatch(modalOpen())
+    setShowModal(!showModal);
+    document.body.style.overflowY = "hidden";
+  };
+
   return (
     <>
+      {showModal && (
+        <MoviePreviewModal
+          movieData={movie}
+          id={id}
+          closeModal={handleCloseModal}
+        />
+      )}
       <div className="w-full aspect-video absolute sm:pt-[20%] pt-[30%] sm:pl-14 pl-5 bg-gradient-to-r from-[#000000ae] text-white">
         <h1
           className={`text-shadow select-none cursor-default sm:text-5xl text-xl font-bold`}
@@ -56,7 +77,7 @@ const VideoTitle = ({ movie, overview, title }) => {
               </svg>
               <span className="hidden sm:block">Play</span>
             </button>
-            <button className="flex flex-row sm:px-6 p-1 sm:p-0 sm:py-2 justify-center items-center gap-2 bg-gray-500 text-white text-lg bg-opacity-50 rounded-md">
+            <button onClick={handleOpenModal} className="flex flex-row sm:px-6 p-1 sm:p-0 sm:py-2 justify-center items-center gap-2 bg-gray-500 text-white text-lg bg-opacity-50 rounded-md">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
