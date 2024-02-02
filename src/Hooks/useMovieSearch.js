@@ -48,7 +48,9 @@ const useMovieSearch = (dispatch) => {
         }
       });
 
-      const finalFilteredTmdbResults = filteredTmdbResults.filter(ele => ele.length !== 0);
+      const finalFilteredTmdbResults = filteredTmdbResults.filter(
+        (ele) => ele.length !== 0
+      );
 
       dispatch(
         addMovieSearchResult({
