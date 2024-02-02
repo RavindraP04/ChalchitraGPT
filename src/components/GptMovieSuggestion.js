@@ -3,6 +3,7 @@ import MovieCategory from "./MovieCategory";
 import { idk, thinkingBunny } from "../utils/constants";
 import { changeGif } from "../utils/configSlice";
 import { useEffect } from "react";
+import MovieCard from "./MovieCard";
 
 const GptMovieSuggestion = () => {
   const dispatch = useDispatch();
@@ -20,21 +21,10 @@ const GptMovieSuggestion = () => {
   }
 
   return (
-    <div className="text-white bg-black m-5 rounded-md sm:m-12 min-h-96 bg-opacity-80">
-      {gptMovieResult && tmdbMovieResult[0].length !== 0 ? (
-        gptMovieResult.map((movie, index) => (
-          <MovieCategory
-            css={
-              index == 0
-                ? " pt-5 sm:pt-10 "
-                : index == gptMovieResult.length - 1
-                ? " pb-5 sm:pb-10 "
-                : ""
-            }
-            key={movie}
-            title={movie}
-            data={tmdbMovieResult[index]}
-          />
+    <div className="text-white flex justify-center items-center bg-black m-5 rounded-md sm:m-12 min-h-96 bg-opacity-80">
+      {tmdbMovieResult ? (
+        tmdbMovieResult.map((movie) => (
+          <MovieCard key={movie[0].id} id={movie[0].id} movieData={movie[0]} title={"GptSearchResult"} poster={movie[0].poster_path} name={movie[0].title} />
         ))
       ) : (
         <div className="flex flex-col justify-center items-center h-96 gap-2 text-gray-400 brightness-105">
