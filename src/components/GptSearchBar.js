@@ -5,7 +5,7 @@ import {
   whenEmptyGptInput,
 } from "../utils/constants";
 import lang from "../utils/languageConstants";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { changeGif } from "../utils/configSlice";
 import useMovieSearch from "../Hooks/useMovieSearch";
 import { addMovieSearchResult } from "../utils/gptSlice";
@@ -17,9 +17,11 @@ const GptSearchBar = () => {
 
   const { handleGptSearch, loading } = useMovieSearch(dispatch);
 
-  if (loading) {
-    dispatch(changeGif(waitingForResponse));
-  }
+  useEffect(() => {
+    if (loading) {
+      dispatch(changeGif(waitingForResponse));
+    }
+  }, [loading, dispatch]);
 
   const onSearchClick = async () => {
     dispatch(
@@ -28,6 +30,7 @@ const GptSearchBar = () => {
         tmdbMovieResult: null,
       })
     );
+
     if (!userInput.current || userInput.current.value === "") {
       dispatch(changeGif(whenEmptyGptInput));
       return;
