@@ -4,38 +4,40 @@ import MoviePreviewModal from "./MoviePreviewModal";
 import { useDispatch } from "react-redux";
 import { modalOpen } from "../utils/configSlice";
 
-const MovieCard = ({ id, title, poster, name, movieData }) => {
+const MovieCard = ({ title, movieData }) => {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
 
   const handleCloseModal = () => {
-    dispatch(modalOpen())
+    dispatch(modalOpen());
     setShowModal(!showModal);
     document.body.style.overflowY = "scroll";
   };
 
   const handleOpenModal = () => {
-    dispatch(modalOpen())
+    dispatch(modalOpen());
     setShowModal(!showModal);
     document.body.style.overflowY = "hidden";
   };
 
-  if (!poster) return null;
   return (
     <div>
       {showModal && (
         <MoviePreviewModal
           movieData={movieData}
-          id={id}
           closeModal={handleCloseModal}
         />
       )}
-      <div onClick={handleOpenModal} className="w-24 cursor-pointer pb-3 sm:w-36 mr-4">
+      <div
+        onClick={handleOpenModal}
+        className="w-24 cursor-pointer pb-3 sm:w-36 mr-4"
+      >
         <div className="relative group hover:shadow-lg hover:shadow-white/40 rounded-lg overflow-hidden">
           <img
+            alt="poster_image"
             draggable={false}
             className="rounded-lg group-hover:brightness-75 group-hover:scale-105 transition duration-300 ease-in-out"
-            src={POSTER_CDN_URL + poster}
+            src={POSTER_CDN_URL + movieData?.poster_path}
           />
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -52,11 +54,11 @@ const MovieCard = ({ id, title, poster, name, movieData }) => {
             />
           </svg>
         </div>
-        {title == "Now Playing" ? (
+        {title === "Now Playing" ? (
           ""
         ) : (
           <p className="line-clamp-2 max-h-10 sm:max-h-[50px] pb-5 text-xs sm:text-sm font-bold pt-2 pl-1 sm:pl-2">
-            {name}
+            {movieData?.title}
           </p>
         )}
       </div>

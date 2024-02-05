@@ -8,15 +8,18 @@ import useTrailerModal from "../Hooks/useTrailerModal";
 import VideoBackground from "./VideoBackground";
 import "@fontsource/inter";
 import Modal from "@mui/joy/Modal";
-import { ModalClose } from "@mui/joy";
+import { ModalClose, Tooltip } from "@mui/joy";
 import useMovieCast from "../Hooks/useMovieCast";
+import Snackbar from "@mui/joy/Snackbar";
 
-const MoviePreviewModal = ({ id, closeModal, movieData }) => {
+const MoviePreviewModal = ({ closeModal, movieData }) => {
   const [open, setOpen] = useState(false);
   const [cast, setCast] = useState(7);
-  useTrailerModal(id);
-  useDetailedMovieData(id);
-  useMovieCast(id);
+  const [openToast, setOpenToast] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(null);
+  useTrailerModal(movieData?.id);
+  useDetailedMovieData(movieData?.id);
+  useMovieCast(movieData?.id);
 
   const castDetails = useSelector((store) => store.movies.castDetails);
 
@@ -35,17 +38,33 @@ const MoviePreviewModal = ({ id, closeModal, movieData }) => {
     modalRefFg.current.classList.add("blur-transition-Modal-foreground");
     modalRefBg.current.classList.add("blur-transition-Modal-background");
 
+    if (localStorage.getItem(movieData?.id)) {
+      setIsBookmarked(true);
+    } else {
+      setIsBookmarked(false);
+    }
+
     return () => {
       dispatch(addDetailedMovieData(null));
     };
-  }, []);
+  }, [dispatch, modalRefFg, modalRefBg, movieData?.id]);
 
   const handleViewAllCast = () => {
-    if (cast == castDetails.length - 1) {
+    if (cast === castDetails.length - 1) {
       setCast(7);
     } else {
       setCast(castDetails.length - 1);
     }
+  };
+
+  const handleWatchList = () => {
+    if (isBookmarked) {
+      localStorage.removeItem(movieData?.id);
+    } else {
+      localStorage.setItem(movieData?.id, JSON.stringify(movieData));
+    }
+    setIsBookmarked(!isBookmarked);
+    setOpenToast(true);
   };
 
   return createPortal(
@@ -82,6 +101,7 @@ const MoviePreviewModal = ({ id, closeModal, movieData }) => {
         <div className="relative h-[510px]">
           <div className="relative brightness-50 -z-10 overflow-hidden h-[510px]">
             <img
+              alt="Backdrop_image"
               draggable={false}
               className="h-full w-full object-cover object-top"
               src={POSTER_CDN_URL_HD + movieData?.backdrop_path}
@@ -91,6 +111,7 @@ const MoviePreviewModal = ({ id, closeModal, movieData }) => {
           <div className="absolute top-10 grid grid-cols-12 w-full h-fit z-20">
             <div className="col-span-3 relative left-5 justify-self-end">
               <img
+                alt="Poster_image"
                 className="w-72 rounded-md"
                 src={POSTER_CDN_URL_HD + movieData?.poster_path}
               />
@@ -135,38 +156,54 @@ const MoviePreviewModal = ({ id, closeModal, movieData }) => {
                     /10
                   </p>
                 </div>
-                <div className="p-2 group bg-white/30 backdrop-blur-sm cursor-pointer rounded-full">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-5 h-5 fill-white group-hover:text-red-600 group-hover:fill-red-600"
+
+                <Tooltip
+                  title={`${
+                    isBookmarked ? "Added to Watchlist" : "Add to Watchlist"
+                  }`}
+                  size="sm"
+                >
+                  <div
+                    onClick={handleWatchList}
+                    className="p-2 group active:scale-95 bg-white/30 backdrop-blur-sm cursor-pointer rounded-full"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-                    />
-                  </svg>
-                </div>
-                <div className="p-2 group bg-white/30 backdrop-blur-sm cursor-pointer rounded-full">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-5 h-5 fill-white group-hover:fill-blue-950 group-hover:stroke-blue-950"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
-                    />
-                  </svg>
-                </div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className={`w-5 h-5 ${
+                        isBookmarked
+                          ? "fill-yellow-400 stroke-yellow-400"
+                          : "fill-white"
+                      } group-hover:fill-yellow-400 group-hover:stroke-yellow-400`}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
+                      />
+                    </svg>
+                  </div>
+                </Tooltip>
+                <Snackbar
+                  open={openToast}
+                  autoHideDuration={3000}
+                  color={isBookmarked ? "success" : "danger"}
+                  size="md"
+                  variant="plain"
+                  onClose={(event, reason) => {
+                    if (reason === "clickaway") {
+                      return;
+                    }
+                    setOpenToast(false);
+                  }}
+                >
+                  {isBookmarked
+                    ? `${movieData.title} added to watchlist.`
+                    : `${movieData.title} removed from watchlist.`}
+                </Snackbar>
               </div>
 
               <div>
@@ -210,7 +247,10 @@ const MoviePreviewModal = ({ id, closeModal, movieData }) => {
             <div className="w-[80vw]">
               <ModalClose />
               <div>
-                <VideoBackground movieId={id} type={"trailerModal"} />
+                <VideoBackground
+                  movieId={movieData?.id}
+                  type={"trailerModal"}
+                />
               </div>
             </div>
           </Modal>

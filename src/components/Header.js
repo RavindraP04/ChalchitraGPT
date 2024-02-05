@@ -251,6 +251,7 @@ const Header = () => {
                   {toggleGptSearch ? "Home Page" : "GPT Search"}
                 </button>
 
+                {/* WatchList and HomePage toggle inside the dropdown */}
                 <button
                   className="py-2 flex whitespace-nowrap justify-start items-center gap-2 px-4 text-sm font-bold bg-black text-white rounded-md active:scale-95"
                   onClick={
