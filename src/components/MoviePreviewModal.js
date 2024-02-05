@@ -11,6 +11,7 @@ import Modal from "@mui/joy/Modal";
 import { ModalClose, Tooltip } from "@mui/joy";
 import useMovieCast from "../Hooks/useMovieCast";
 import Snackbar from "@mui/joy/Snackbar";
+import { modalOpen } from "../utils/configSlice";
 
 const MoviePreviewModal = ({ closeModal, movieData }) => {
   const [open, setOpen] = useState(false);
@@ -20,6 +21,8 @@ const MoviePreviewModal = ({ closeModal, movieData }) => {
   useTrailerModal(movieData?.id);
   useDetailedMovieData(movieData?.id);
   useMovieCast(movieData?.id);
+  const IsmodalOpen = useSelector((store) => store.config.modalOpen);
+  const viewWatchListPage = useSelector((store) => store.config.viewWatchListPage);
 
   const castDetails = useSelector((store) => store.movies.castDetails);
 
@@ -65,6 +68,9 @@ const MoviePreviewModal = ({ closeModal, movieData }) => {
     }
     setIsBookmarked(!isBookmarked);
     setOpenToast(true);
+    if(viewWatchListPage){
+      dispatch(modalOpen())
+    }
   };
 
   return createPortal(
@@ -74,10 +80,7 @@ const MoviePreviewModal = ({ closeModal, movieData }) => {
         onClick={closeModal}
         className="fixed z-30 top-0 left-0 right-0 bottom-0 backdrop-blur-sm bg-white/20"
       >
-        <button
-          className="absolute z-30 top-2 right-2 font-bold hover:bg-white hover:text-black text-white rounded-md p-2 text-sm"
-          onClick={closeModal}
-        >
+        <button className="absolute z-30 top-2 right-2 font-bold hover:bg-white hover:text-black text-white rounded-md p-2 text-sm">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
