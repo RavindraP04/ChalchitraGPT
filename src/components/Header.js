@@ -6,15 +6,42 @@ import { useEffect, useState } from "react";
 import { addUser, removeUser } from "../utils/userSlice";
 import { addToggleGptSearch } from "../utils/gptSlice";
 import { SUPPORTED_LANGUAGES } from "../utils/constants";
-import { changeLanguage, toggleDropdown } from "../utils/configSlice";
+import {
+  changeLanguage,
+  changeToWatchlistPage,
+  toggleDropdown,
+} from "../utils/configSlice";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const user = useSelector((store) => store.user);
-  const gptToggle = useSelector((store) => store.gptSearch);
+  const toggleGptSearch = useSelector(
+    (store) => store.gptSearch.toggleGptSearch
+  );
   const dropdown = useSelector((store) => store.config.dropdown);
+  const showWatchListPage = useSelector(
+    (store) => store.config.viewWatchListPage
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const handleToggleGptSearch = () => {
+    if (showWatchListPage) {
+      dispatch(changeToWatchlistPage());
+    }
+    dispatch(addToggleGptSearch());
+  };
+
+  const closeGPTandWatchlist = () => {
+    dispatch(changeToWatchlistPage());
+  };
+
+  const handleWatchlist = () => {
+    if (toggleGptSearch) {
+      dispatch(addToggleGptSearch());
+    }
+    dispatch(changeToWatchlistPage());
+  };
 
   const handleSignOut = () => {
     signOut(auth)
@@ -28,19 +55,14 @@ const Header = () => {
     const scrolled = window.scrollY > 100;
     setIsScrolled(scrolled);
   };
-  
+
   const handleDropdown = () => {
     dispatch(toggleDropdown());
-  };
-
-  const handleToggleGptSearch = () => {
-    dispatch(addToggleGptSearch());
   };
 
   const handleLanguageChange = (e) => {
     dispatch(changeLanguage(e.target.value));
   };
-
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -92,7 +114,8 @@ const Header = () => {
       </svg>
       {user && (
         <div className="flex flex-row items-center gap-3">
-          {gptToggle.toggleGptSearch && (
+          {/* Langauge Selector */}
+          {toggleGptSearch && (
             <select
               onChange={handleLanguageChange}
               className="outline-none p-2 bg-gray-900 text-white m-2"
@@ -104,15 +127,50 @@ const Header = () => {
               ))}
             </select>
           )}
+
+          {/* HomePage / GPT Search Navbar Toggle */}
           {!dropdown && (
             <button
               onClick={handleToggleGptSearch}
-              className="py-2 hidden sm:block px-4 text-sm font-bold bg-purple-800 text-white rounded-md active:scale-95"
+              className="py-2 hidden sm:flex px-4 gap-2 text-sm font-bold bg-purple-800 text-white rounded-md active:scale-95"
             >
-              {gptToggle.toggleGptSearch ? "Home Page" : "GPT Search"}
+              {toggleGptSearch ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-5 h-5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-5 h-5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                  />
+                </svg>
+              )}
+              {toggleGptSearch ? "Home Page" : "GPT Search"}
             </button>
           )}
+
           <div onClick={handleDropdown} className="relative">
+            {/* User Photo onClick toggle */}
             <div className="flex text-white cursor-pointer items-center gap-1">
               <img
                 className="w-9 rounded-lg"
@@ -151,28 +209,89 @@ const Header = () => {
                 </svg>
               )}
             </div>
+
             {dropdown && (
               <div className="absolute top-10 right-0 flex flex-col rounded-md bg-white border border-black p-1 gap-1">
+                {/* HomePage / GPT Search inside dropdown */}
                 <button
                   onClick={handleToggleGptSearch}
                   className="py-2 flex whitespace-nowrap justify-start items-center gap-2 px-4 text-sm font-bold bg-purple-800 text-white rounded-md active:scale-95"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-4 h-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-                    />
-                  </svg>
-                  {gptToggle.toggleGptSearch ? "Home Page" : "GPT Search"}
+                  {toggleGptSearch ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-5 h-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-5 h-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                      />
+                    </svg>
+                  )}
+                  {toggleGptSearch ? "Home Page" : "GPT Search"}
                 </button>
+
+                <button
+                  className="py-2 flex whitespace-nowrap justify-start items-center gap-2 px-4 text-sm font-bold bg-black text-white rounded-md active:scale-95"
+                  onClick={
+                    showWatchListPage ? closeGPTandWatchlist : handleWatchlist
+                  }
+                >
+                  {showWatchListPage ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-5 h-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-5 h-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"
+                      />
+                    </svg>
+                  )}
+                  {showWatchListPage ? "Home Page" : "Watchlist"}
+                </button>
+
+                {/* Login / Logout Button */}
                 <button
                   onClick={handleSignOut}
                   className="border border-black whitespace-nowrap text-sm font-extrabold rounded-md bg-white flex justify-start px-4 items-center gap-3 py-2 text-black"

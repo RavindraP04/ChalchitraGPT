@@ -9,6 +9,7 @@ import MainContainer from "./MainContainer";
 import SecondaryContainer from "./SecondaryContainer";
 import { toggleDropdown } from "../utils/configSlice";
 import Loader from "./Loader";
+import Watchlist from "./Watchlist";
 
 const Browse = () => {
   const nowPlayingMovies = useSelector(
@@ -27,15 +28,24 @@ const Browse = () => {
     }
   };
 
-  const gptToggle = useSelector((store) => store.gptSearch);
+  const toggleGptSearch = useSelector(
+    (store) => store.gptSearch.toggleGptSearch
+  );
+  const toggleWatchlist = useSelector(
+    (store) => store.config.viewWatchListPage
+  );
 
   return (
     <div>
       {!nowPlayingMovies && <Loader />}
       <Header />
-      {gptToggle.toggleGptSearch ? (
+      {toggleGptSearch ? (
         <div onClick={dropdownClose}>
           <GptSearchContainer />
+        </div>
+      ) : toggleWatchlist ? (
+        <div onClick={dropdownClose}>
+          <Watchlist />
         </div>
       ) : (
         <div onClick={dropdownClose}>
