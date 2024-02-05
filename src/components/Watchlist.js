@@ -3,28 +3,35 @@ import MovieCard from "./MovieCard";
 
 const Watchlist = () => {
   const [localStorageData, setLocalStorageData] = useState([]);
+  const [watchListData, setWatchListData] = useState(false);
   let movieIds = Object.keys(localStorageData).filter((key) => !isNaN(key));
+
+  const handleState = () => {
+    setWatchListData(!watchListData)
+  }
+
   useEffect(() => {
     const data = localStorage;
     setLocalStorageData(data);
   }, []);
 
   return (
-    <div className=" bg-black text-white">
+    <div className=" bg-black pt-24 px-14 text-white h-screen">
       <div
-        className={`flex h-screen ${
+        className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 ${
           movieIds.length === 0 ? "items-center justify-center" : ""
-        } pt-24 px-14`}
+        }`}
       >
         {movieIds.length === 0 ? (
           <p className="text-3xl text-gray-600 font-bold">No Bookmark Yet!</p>
         ) : (
           movieIds.map((key) => (
-            <MovieCard
-              key={key}
-              title="Watchlist"
-              movieData={{ ...JSON.parse(localStorageData[key]) }}
-            />
+            <div key={key} className="flex items-center justify-center h-fit w-full" onClick={handleState}>
+              <MovieCard
+                title="Watchlist"
+                movieData={{ ...JSON.parse(localStorageData[key]) }}
+              />
+            </div>
           ))
         )}
       </div>
