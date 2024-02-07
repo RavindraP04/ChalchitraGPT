@@ -20,16 +20,12 @@ const GptSearchBar = () => {
 
   const { handleGptSearch, loading } = useMovieSearch(dispatch);
 
-  // useEffect(() => {
-  //   if (loading) {
-  //     dispatch(changeGif(waitingForResponse));
-  //   }
-  // }, [loading, dispatch]);
   useEffect(() => {
     dispatch(changeGif(thinkingBunny));
   }, []);
 
   const onSearchClick = async () => {
+    let gptInputField = document.getElementById("gptInputField").value;
     dispatch(
       addMovieSearchResult({
         gptMovieResult: null,
@@ -37,7 +33,7 @@ const GptSearchBar = () => {
       })
     );
 
-    if (!userInput.current || userInput.current.value == "") {
+    if (gptInputField == "") {
       dispatch(changeGif(whenEmptyGptInput));
       return;
     }
@@ -75,6 +71,7 @@ const GptSearchBar = () => {
             className="p-4 m-4 h-10 sm:h-auto pr-[50px] outline-none rounded-md col-span-12 sm:col-span-9"
             type="text"
             placeholder={lang?.[currentLanguage]?.gptSearchPlaceholder}
+            id="gptInputField"
           />
           <button
             disabled={loading}
