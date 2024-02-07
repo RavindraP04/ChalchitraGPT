@@ -94,7 +94,7 @@ const Header = () => {
     <div
       className={`flex justify-between ${
         isScrolled ? "bg-black" : "bg-gradient-to-b from-black"
-      } w-full fixed top-0 z-20 py-4 sm:px-12 px-4`}
+      } w-full fixed top-0 z-30 py-4 sm:px-12 px-4`}
     >
       <svg
         viewBox="0 0 111 30"
