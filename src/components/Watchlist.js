@@ -7,7 +7,7 @@ const Watchlist = () => {
   const [localStorageData, setLocalStorageData] = useState([]);
   const [watchListData, setWatchListData] = useState(false);
   let movieIds = Object.keys(localStorageData).filter((key) => !isNaN(key));
-  
+
   const handleState = () => {
     setWatchListData(!watchListData);
   };
@@ -19,15 +19,17 @@ const Watchlist = () => {
 
   return (
     <div className=" bg-black pt-24 px-14 text-white h-screen">
-      <div
-        className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 ${
-          movieIds.length === 0 ? "items-center justify-center" : ""
-        }`}
-      >
-        {movieIds.length === 0 ? (
-          <p className="text-3xl text-gray-600 font-bold">No Bookmark Yet!</p>
-        ) : (
-          movieIds.map((key) => (
+      {movieIds.length == 0 ? (
+        <div className="flex justify-center items-center h-[80vh]">
+          <p className="text-3xl text-gray-600 whitespace-nowrap font-bold">
+            No Bookmarks Yet!
+          </p>
+        </div>
+      ) : (
+        <div
+          className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8`}
+        >
+          {movieIds.map((key) => (
             <div
               key={key}
               className="flex items-center justify-center h-fit w-full"
@@ -38,9 +40,9 @@ const Watchlist = () => {
                 movieData={{ ...JSON.parse(localStorageData[key]) }}
               />
             </div>
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
