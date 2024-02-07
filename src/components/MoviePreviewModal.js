@@ -15,13 +15,12 @@ import { modalOpen } from "../utils/configSlice";
 
 const MoviePreviewModal = ({ closeModal, movieData }) => {
   const [open, setOpen] = useState(false);
-  const [cast, setCast] = useState(7);
+  const [cast, setCast] = useState(6);
   const [openToast, setOpenToast] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(null);
   useTrailerModal(movieData?.id);
   useDetailedMovieData(movieData?.id);
   useMovieCast(movieData?.id);
-  const IsmodalOpen = useSelector((store) => store.config.modalOpen);
   const viewWatchListPage = useSelector((store) => store.config.viewWatchListPage);
 
   const castDetails = useSelector((store) => store.movies.castDetails);
@@ -54,7 +53,7 @@ const MoviePreviewModal = ({ closeModal, movieData }) => {
 
   const handleViewAllCast = () => {
     if (cast === castDetails.length - 1) {
-      setCast(7);
+      setCast(6);
     } else {
       setCast(castDetails.length - 1);
     }
