@@ -13,17 +13,17 @@ const GptMovieSuggestion = () => {
   const currentLanguage = useSelector((store) => store.config.lang);
   const gifImage = useSelector((store) => store.config.gifImage);
 
-  useEffect(() => {
-    dispatch(changeGif(thinkingBunny));
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(changeGif(thinkingBunny));
+  // }, []);
 
-  if (
-    gptMovieResult &&
-    (gptMovieResult[0][0] === "sorrybro" ||
-      gptMovieResult[0][0] === "I apologize")
-  ) {
-    dispatch(changeGif(idk));
-  }
+  // if (
+  //   gptMovieResult !== null &&
+  //   (gptMovieResult[0][0] === "sorrybro" ||
+  //     gptMovieResult[0][0] === "I apologize")
+  // ) {
+  //   dispatch(changeGif(idk));
+  // }
 
   return (
     <div className="text-white flex justify-center items-center bg-black m-5 rounded-md sm:my-12 sm:mx-20 min-h-96 bg-opacity-80">

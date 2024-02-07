@@ -1,6 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
   LoginBg,
+  idk,
+  thinkingBunny,
   waitingForResponse,
   whenEmptyGptInput,
 } from "../utils/constants";
@@ -14,14 +16,18 @@ const GptSearchBar = () => {
   const userInput = useRef();
   const currentLanguage = useSelector((store) => store.config.lang);
   const dispatch = useDispatch();
+  const { gptMovieResult } = useSelector((store) => store.gptSearch);
 
   const { handleGptSearch, loading } = useMovieSearch(dispatch);
 
+  // useEffect(() => {
+  //   if (loading) {
+  //     dispatch(changeGif(waitingForResponse));
+  //   }
+  // }, [loading, dispatch]);
   useEffect(() => {
-    if (loading) {
-      dispatch(changeGif(waitingForResponse));
-    }
-  }, [loading, dispatch]);
+    dispatch(changeGif(thinkingBunny));
+  }, []);
 
   const onSearchClick = async () => {
     dispatch(
@@ -31,13 +37,23 @@ const GptSearchBar = () => {
       })
     );
 
-    if (!userInput.current || userInput.current.value === "") {
+    if (!userInput.current || userInput.current.value == "") {
       dispatch(changeGif(whenEmptyGptInput));
       return;
     }
     dispatch(changeGif(waitingForResponse));
     await handleGptSearch(userInput.current.value, dispatch);
   };
+
+  let result = gptMovieResult !== null ? gptMovieResult[0][0] : "";
+  if (
+    result === "sorrybro" ||
+    result === "i apologize" ||
+    result === "sorry" ||
+    result === "apologies"
+  ) {
+    dispatch(changeGif(idk));
+  }
 
   return (
     <div>
