@@ -48,7 +48,7 @@ const Login = () => {
           updateProfile(user, {
             displayName: name.current.value,
             photoURL:
-              "https://avatars.githubusercontent.com/u/98400348?s=400&u=095cf205c3065609a9bef74f15fdb6cbde908254&v=4",
+              "https://wallpapers.com/images/high/netflix-profile-pictures-1000-x-1000-2fg93funipvqfs9i.webp",
           })
             .then(() => {
               const { uid, email, displayName, photoURL } = user;
