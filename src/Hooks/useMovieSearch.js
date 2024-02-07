@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import openai from "../utils/openai";
 import { API_OPTIONS } from "../utils/constants";
 import { addMovieSearchResult } from "../utils/gptSlice";
+import genAI from "../utils/gemini";
 
 const useMovieSearch = (dispatch) => {
   const [loading, setLoading] = useState(false);
@@ -25,9 +26,18 @@ const useMovieSearch = (dispatch) => {
         model: "gpt-3.5-turbo",
       });
 
-      const GptMovieResult = responseList.choices?.[0]?.message?.content
-        .split(", ")
-        .map((ele) => (ele = ele.split("-")));
+      const gptResponse = responseList.choices?.[0]?.message?.content;
+
+      //GEMINI AI FETCHING START
+      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+      const result = await model.generateContent(gptQuery);
+      const response = await result.response;
+      const geminiResponse = response.text();
+      //GEMINI AI FETCHING END
+
+      let GptMovieResult = (geminiResponse + ", " + gptResponse).split(", ");
+      let set = new Set(GptMovieResult);
+      GptMovieResult = Array.from(set).map((ele) => (ele = ele.split("-")));
 
       let movieName = [];
 

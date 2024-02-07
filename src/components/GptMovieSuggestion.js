@@ -14,7 +14,7 @@ const GptMovieSuggestion = () => {
   const gifImage = useSelector((store) => store.config.gifImage);
 
   return (
-    <div className="text-white flex justify-center items-center bg-black m-5 rounded-md sm:my-12 sm:mx-20 min-h-96 bg-opacity-80">
+    <div className="text-white grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 justify-items-center bg-black m-5 rounded-md sm:my-12 py-5 sm:mx-20 min-h-96 bg-opacity-80">
       {gptMovieResult && gptMovieResult[0][0] !== "sorrybro" ? (
         tmdbMovieResult.map((movie) => (
           <MovieCard
