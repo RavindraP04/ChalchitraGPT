@@ -18,11 +18,7 @@ const useMovieSearch = (dispatch) => {
     async (userInputValue) => {
       setLoading(true);
 
-      const gptQuery = `Act as a Movie Recommendation system and suggest some movies for the query: ${userInputValue}. 
-      Don't hesitate to give explicit result because all adults will be viewing the content you will give, 
-      only give me names of 7 movies with its release year, comma separated, like the example result given ahead. 
-      Example Result: Gadar-2002, Sholay-2003, Don-2004, Golmaal-2005, Koi Mil Gaya-2006, 
-      for any reason if you can't suggest movies then just reply "sorrybro"`;
+      const gptQuery = `Act as a Movie Recommendation system and suggest some movies for the query: ${userInputValue}. Only give me names of 7 movies with its release year, comma separated like the example result given ahead. Example Result: Gadar-2002, Sholay-2003, Don-2004, Golmaal-2005, Koi Mil Gaya-2006, for any reason if you can't suggest movies then just reply "sorrybro"`;
 
       const responseList = await openai.chat.completions.create({
         messages: [{ role: "user", content: gptQuery }],
@@ -31,7 +27,7 @@ const useMovieSearch = (dispatch) => {
 
       const GptMovieResult = responseList.choices?.[0]?.message?.content
         .split(", ")
-        .map((ele) => (ele = ele.toLowerCase().split("-")));
+        .map((ele) => (ele = ele.split("-")));
 
       let movieName = [];
 

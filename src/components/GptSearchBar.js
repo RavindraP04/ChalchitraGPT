@@ -43,10 +43,8 @@ const GptSearchBar = () => {
 
   let result = gptMovieResult !== null ? gptMovieResult[0][0] : "";
   if (
-    result === "sorrybro" ||
-    result === "i apologize" ||
-    result === "sorry" ||
-    result === "apologies"
+    result.toLowerCase().includes("sorry") ||
+    result.toLowerCase().includes("apologi")
   ) {
     dispatch(changeGif(idk));
   }
