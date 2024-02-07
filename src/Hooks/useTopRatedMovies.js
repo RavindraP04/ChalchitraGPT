@@ -13,7 +13,7 @@ const useTopRatedMovies = () => {
       API_OPTIONS
     );
     const json = await data.json();
-    dispatch(addTopRatedMovies(json.results));
+    dispatch(addTopRatedMovies(json.results.reverse()));
   };
 
   useEffect(() => {

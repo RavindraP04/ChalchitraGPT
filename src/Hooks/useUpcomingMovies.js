@@ -13,7 +13,7 @@ const useUpcomingMovies = () => {
       API_OPTIONS
     );
     const json = await data.json();
-    dispatch(addUpcomingMovies(json.results));
+    dispatch(addUpcomingMovies(json.results.reverse()));
   };
 
   useEffect(() => {
