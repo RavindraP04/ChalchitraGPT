@@ -196,6 +196,7 @@ const Header = () => {
             {/* User Photo onClick toggle */}
             <div className="flex text-white cursor-pointer items-center gap-1">
               <img
+                draggable={false}
                 className="w-9 rounded-lg"
                 alt="userPhoto"
                 src={user?.photoURL}
