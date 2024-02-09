@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   LoginBg,
   idk,
+  samplePrompts,
   thinkingBunny,
   waitingForResponse,
   whenEmptyGptInput,
@@ -17,12 +18,11 @@ const GptSearchBar = () => {
   const currentLanguage = useSelector((store) => store.config.lang);
   const dispatch = useDispatch();
   const { gptMovieResult } = useSelector((store) => store.gptSearch);
-
   const { handleGptSearch, loading } = useMovieSearch(dispatch);
 
   useEffect(() => {
     dispatch(changeGif(thinkingBunny));
-  }, []);
+  }, [dispatch]);
 
   const onSearchClick = async () => {
     let gptInputField = document.getElementById("gptInputField").value;
@@ -33,7 +33,7 @@ const GptSearchBar = () => {
       })
     );
 
-    if (gptInputField == "") {
+    if (gptInputField === "") {
       dispatch(changeGif(whenEmptyGptInput));
       return;
     }
@@ -41,10 +41,22 @@ const GptSearchBar = () => {
     await handleGptSearch(userInput.current.value, dispatch);
   };
 
+  const onSamplePromptClick = async (promptText) => {
+    dispatch(
+      addMovieSearchResult({
+        gptMovieResult: null,
+        tmdbMovieResult: null,
+      })
+    );
+    userInput.current.value = promptText;
+    dispatch(changeGif(waitingForResponse));
+    await handleGptSearch(promptText, dispatch);
+  };
+
   let result = gptMovieResult !== null ? gptMovieResult[0][0] : "";
   if (
-    result.toLowerCase().includes("sorry") ||
-    result.toLowerCase().includes("apologi")
+    result?.toLowerCase().includes("sorry") ||
+    result?.toLowerCase().includes("apologi")
   ) {
     dispatch(changeGif(idk));
   }
@@ -53,12 +65,13 @@ const GptSearchBar = () => {
     <div>
       <div className="brightness-50 fixed overflow-hidden">
         <img
+          draggable={false}
           className="h-screen sm:w-screen object-cover"
           src={LoginBg}
           alt="background_Image"
         />
       </div>
-      <div className="pt-[28%] sm:pt-[10%] flex justify-center">
+      <div className="pt-[28%] sm:pt-[10%] flex flex-col justify-center items-center">
         <form
           onSubmit={(e) => e.preventDefault()}
           className="bg-black bg-opacity-80 relative sm:mx-0 rounded-md w-screen sm:w-1/2 grid grid-cols-12"
@@ -111,6 +124,17 @@ const GptSearchBar = () => {
             </span>
           </button>
         </form>
+        <div className="grid grid-cols-2 gap-2 mt-2">
+          {samplePrompts.map((prompt, index) => (
+            <div
+              key={index}
+              onClick={() => onSamplePromptClick(prompt)}
+              className="bg-white/30 rounded-md text-xs sm:text-base backdrop-blur-sm text-white cursor-pointer active:scale-95 px-2 sm:px-4 py-2"
+            >
+              {prompt}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

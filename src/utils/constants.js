@@ -42,3 +42,10 @@ export const waitingForResponse =
 
 export const idk =
   "https://media1.tenor.com/m/-jieBxy9TJ4AAAAC/mein-nahi-bataunga-johnny-lever.gif";
+
+export const samplePrompts = [
+  "Sci-fi films with realistic depictions of future technology",
+  "Epic historical bollowood movies with stunning visuals",
+  "Movies with aliens and heartwarming friendships",
+  "Hindi Movies with blend of Horror, Comedy, Love Story",
+];

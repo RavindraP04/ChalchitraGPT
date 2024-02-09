@@ -1,8 +1,9 @@
 import { useState, useCallback } from "react";
 import openai from "../utils/openai";
-import { API_OPTIONS } from "../utils/constants";
+import { API_OPTIONS, idk } from "../utils/constants";
 import { addMovieSearchResult } from "../utils/gptSlice";
 import genAI from "../utils/gemini";
+import { changeGif } from "../utils/configSlice";
 
 const useMovieSearch = (dispatch) => {
   const [loading, setLoading] = useState(false);
@@ -21,22 +22,31 @@ const useMovieSearch = (dispatch) => {
 
       const gptQuery = `Act as a Movie Recommendation system and suggest some movies for the query: ${userInputValue}. Only give me names of 7 movies with its release year, comma separated like the example result given ahead. Example Result: Gadar-2002, Sholay-2003, Don-2004, Golmaal-2005, Koi Mil Gaya-2006, for any reason if you can't suggest movies then just reply "sorrybro"`;
 
-      const responseList = await openai.chat.completions.create({
-        messages: [{ role: "user", content: gptQuery }],
-        model: "gpt-3.5-turbo",
-      });
+      let gptResponse = "";
+      let geminiResponse = "";
+      try {
+        const responseList = await openai.chat.completions.create({
+          messages: [{ role: "user", content: gptQuery }],
+          model: "gpt-3.5-turbo",
+        });
 
-      const gptResponse = responseList.choices?.[0]?.message?.content;
+        gptResponse = responseList.choices?.[0]?.message?.content;
 
-      //GEMINI AI FETCHING START
-      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-      const result = await model.generateContent(gptQuery);
-      const response = await result.response;
-      const geminiResponse = response.text();
-      //GEMINI AI FETCHING END
+        //GEMINI AI FETCHING START
+        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+        const result = await model.generateContent(gptQuery);
+        const response = await result.response;
+        geminiResponse = response.text();
+        //GEMINI AI FETCHING END
+      } catch (error) {
+        dispatch(changeGif(idk));
+        console.log(error);
+      }
 
       let GptMovieResult = (geminiResponse + ", " + gptResponse).split(", ");
       let set = new Set(GptMovieResult);
+      set.delete('')
+      console.log(set)
       GptMovieResult = Array.from(set).map((ele) => (ele = ele.split("-")));
 
       let movieName = [];
