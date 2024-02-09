@@ -3,14 +3,9 @@ import GptMovieSuggestion from "./GptMovieSuggestion";
 import GptSearchBar from "./GptSearchBar";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal, ModalClose } from "@mui/joy";
-import { toggleGptSearchExplanationModal } from "../utils/gptSlice";
 
 const GptSearchContainer = () => {
   const [open, setOpen] = useState(false);
-  const dispatch = useDispatch();
-  const isModalOpen = useSelector(
-    (store) => store.gptSearch.showGPTSearchExplanationModal
-  );
 
   useEffect(() => {
     const modalShownBefore = localStorage.getItem("modalShown");

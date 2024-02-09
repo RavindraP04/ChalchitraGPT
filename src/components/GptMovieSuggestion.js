@@ -29,6 +29,7 @@ const GptMovieSuggestion = () => {
           <p className="text-center">{lang?.[currentLanguage]?.para1}</p>
           <p className="text-center">{lang?.[currentLanguage]?.para2}</p>
           <img
+            draggable={false}
             alt="gif_Image"
             className="h-52 mt-5 rounded-md"
             src={gifImage}
