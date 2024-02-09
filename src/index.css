@@ -136,3 +136,23 @@
     box-shadow: 0.2em -0.2em 0 0 currentcolor;
   }
 }
+
+.border-image-clip-path {
+  width: auto;
+  height: auto;
+  margin: auto;
+  border: 5px solid;
+  border-image: linear-gradient(45deg, gold, deeppink) 1;
+  clip-path: inset(0px round 10px);
+  animation: huerotate 6s infinite linear;
+  filter: hue-rotate(360deg);
+}
+
+@keyframes huerotate {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rorate(360deg);
+  }
+}
