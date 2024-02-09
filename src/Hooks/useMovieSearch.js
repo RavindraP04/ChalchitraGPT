@@ -40,13 +40,11 @@ const useMovieSearch = (dispatch) => {
         //GEMINI AI FETCHING END
       } catch (error) {
         dispatch(changeGif(idk));
-        console.log(error);
       }
 
       let GptMovieResult = (geminiResponse + ", " + gptResponse).split(", ");
       let set = new Set(GptMovieResult);
       set.delete('')
-      console.log(set)
       GptMovieResult = Array.from(set).map((ele) => (ele = ele.split("-")));
 
       let movieName = [];

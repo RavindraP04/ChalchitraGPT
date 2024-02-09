@@ -129,7 +129,7 @@ const GptSearchBar = () => {
             <div
               key={index}
               onClick={() => onSamplePromptClick(prompt)}
-              className="bg-white/30 rounded-md text-xs sm:text-base backdrop-blur-sm text-white cursor-pointer active:scale-95 px-2 sm:px-4 py-2"
+              className="bg-white/30 rounded-md text-xs sm:text-base backdrop-blur-sm hover:bg-white/50 text-white cursor-pointer active:scale-95 px-2 sm:px-4 py-2"
             >
               {prompt}
             </div>
