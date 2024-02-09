@@ -17,7 +17,7 @@ const VideoBackground = ({ movieId, type }) => {
   }
 
   return (
-    <div>
+    <div className="">
       <iframe
         className="w-full border-none aspect-video"
         src={

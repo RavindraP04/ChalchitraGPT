@@ -26,13 +26,13 @@ const VideoTitle = ({ movie, overview, title }) => {
   };
 
   const handleCloseModal = () => {
-    dispatch(modalOpen())
+    dispatch(modalOpen());
     setShowModal(!showModal);
     document.body.style.overflowY = "scroll";
   };
 
   const handleOpenModal = () => {
-    dispatch(modalOpen())
+    dispatch(modalOpen());
     setShowModal(!showModal);
     document.body.style.overflowY = "hidden";
   };
@@ -46,20 +46,21 @@ const VideoTitle = ({ movie, overview, title }) => {
           closeModal={handleCloseModal}
         />
       )}
-      <div className="w-full aspect-video absolute sm:pt-[20%] pt-[30%] sm:pl-14 pl-5 bg-gradient-to-r from-[#000000ae] text-white">
+      <div className="w-full aspect-video absolute sm:pt-[22%] pt-[33%] sm:pl-14 pl-5 bg-gradient-to-r from-[#000000ae] text-white">
         <h1
           className={`text-shadow select-none cursor-default sm:text-5xl text-xl font-bold`}
         >
           {title}
         </h1>
-        <p className="select-none cursor-default w-[40%] hidden sm:block text-lg pt-5">
-          {overview}
+        <p className="select-none cursor-default w-[40%] h-[120px] overflow-hidden hidden text-balance sm:block text-base pt-5">
+        While the Second World War rages, the teenage Mahito, haunted by his mother's tragic death, is relocated from Tokyo to the serene rural home of his new stepmother Natsuko, a woman who bears a striking resemblance to the boy's mother. As he tries to adjust, this strange new world grows even stranger following the appearance of a persistent gray heron, who perplexes and bedevils Mahito, dubbing him the "long-awaited one."
+          {/* {overview} */}
         </p>
-        <div className="mt-2 sm:mt-5 flex flex-row items-center justify-between">
+        <div className="mt-1 sm:mt-3 flex flex-row items-center justify-between">
           <div className="flex flex-row gap-3">
             <button
               onClick={handleOpenTrailerModal}
-              className=" bg-white flex flex-row p-1 sm:p-0 sm:px-8 sm:py-2 justify-center items-center gap-2 text-black text-xs font-bold sm:font-normal sm:text-lg rounded-md hover:bg-opacity-80"
+              className=" bg-white flex flex-row p-2 sm:p-0 sm:px-8 sm:py-2 justify-center items-center gap-2 text-black text-xs font-bold sm:font-normal sm:text-lg rounded-md hover:bg-opacity-80"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -67,7 +68,7 @@ const VideoTitle = ({ movie, overview, title }) => {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="w-4 sm:w-6 h-4 sm:h-6"
+                className="w-5 sm:w-6 h-5 sm:h-6"
               >
                 <path
                   strokeLinecap="round"
@@ -77,14 +78,17 @@ const VideoTitle = ({ movie, overview, title }) => {
               </svg>
               <span className="hidden sm:block">Play</span>
             </button>
-            <button onClick={handleOpenModal} className="flex flex-row sm:px-6 p-1 sm:p-0 sm:py-2 justify-center items-center gap-2 bg-gray-500 text-white text-lg bg-opacity-50 rounded-md">
+            <button
+              onClick={handleOpenModal}
+              className="flex flex-row sm:px-6 p-2 sm:p-0 sm:py-2 justify-center items-center gap-2 bg-gray-500 text-white text-lg bg-opacity-50 rounded-md"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="w-4 sm:w-6 h-4 sm:h-6"
+                className="w-5 sm:w-6 h-5 sm:h-6"
               >
                 <path
                   strokeLinecap="round"
@@ -95,11 +99,11 @@ const VideoTitle = ({ movie, overview, title }) => {
               <span className="hidden sm:block">More Info</span>
             </button>
           </div>
-          <div className="bg-white/20 backdrop-blur-sm pl-2 pr-10 py-1">
-            <div
-              onClick={handleMuteToggle}
-              className="cursor-pointer border rounded-full p-2"
-            >
+          <div
+            onClick={handleMuteToggle}
+            className="bg-white/20 backdrop-blur-sm pl-2 pr-10 py-1"
+          >
+            <div className="cursor-pointer border rounded-full p-2">
               {mute && (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -107,7 +111,7 @@ const VideoTitle = ({ movie, overview, title }) => {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-5 h-5"
+                  className="w-4 sm:w-5 sm:h-5 h-4"
                 >
                   <path
                     strokeLinecap="round"
@@ -123,7 +127,7 @@ const VideoTitle = ({ movie, overview, title }) => {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-5 h-5"
+                  className="w-4 sm:w-5 sm:h-5 h-4"
                 >
                   <path
                     strokeLinecap="round"
@@ -140,7 +144,7 @@ const VideoTitle = ({ movie, overview, title }) => {
           open={open}
           onClose={handleCloseTrailerModal}
         >
-          <div className="w-[80vw]">
+          <div className="w-screen sm:w-[80vw]">
             <ModalClose />
             <div>
               <VideoBackground movieId={id} type={"trailerModal"} />

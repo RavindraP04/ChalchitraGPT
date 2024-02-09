@@ -51,7 +51,7 @@ const GptSearchBar = () => {
 
   return (
     <div>
-      <div className="brightness-50 fixed -z-10 overflow-hidden">
+      <div className="brightness-50 fixed overflow-hidden">
         <img
           className="h-screen sm:w-screen object-cover"
           src={LoginBg}
@@ -61,7 +61,7 @@ const GptSearchBar = () => {
       <div className="pt-[28%] sm:pt-[10%] flex justify-center">
         <form
           onSubmit={(e) => e.preventDefault()}
-          className="bg-black bg-opacity-80 mx-5 relative sm:mx-0 rounded-md w-screen sm:w-1/2 grid grid-cols-12"
+          className="bg-black bg-opacity-80 relative sm:mx-0 rounded-md w-screen sm:w-1/2 grid grid-cols-12"
         >
           <input
             disabled={loading}

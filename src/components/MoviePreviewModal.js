@@ -21,7 +21,9 @@ const MoviePreviewModal = ({ closeModal, movieData }) => {
   useTrailerModal(movieData?.id);
   useDetailedMovieData(movieData?.id);
   useMovieCast(movieData?.id);
-  const viewWatchListPage = useSelector((store) => store.config.viewWatchListPage);
+  const viewWatchListPage = useSelector(
+    (store) => store.config.viewWatchListPage
+  );
 
   const castDetails = useSelector((store) => store.movies.castDetails);
 
@@ -67,8 +69,8 @@ const MoviePreviewModal = ({ closeModal, movieData }) => {
     }
     setIsBookmarked(!isBookmarked);
     setOpenToast(true);
-    if(viewWatchListPage){
-      dispatch(modalOpen())
+    if (viewWatchListPage) {
+      dispatch(modalOpen());
     }
   };
 
@@ -79,7 +81,7 @@ const MoviePreviewModal = ({ closeModal, movieData }) => {
         onClick={closeModal}
         className="fixed z-30 top-0 left-0 right-0 bottom-0 backdrop-blur-sm bg-white/20"
       >
-        <button className="absolute z-30 top-2 right-2 font-bold hover:bg-white hover:text-black text-white rounded-md p-2 text-sm">
+        <button className="absolute z-30 hidden sm:block top-2 right-2 font-bold hover:bg-white hover:text-black text-white rounded-md p-2 text-sm">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -98,10 +100,10 @@ const MoviePreviewModal = ({ closeModal, movieData }) => {
       </div>
       <div
         ref={modalRefFg}
-        className="bg-black text-white rounded-md z-40 fixed w-[90vw] h-[95vh] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] overflow-y-auto max-h-screen"
+        className="bg-black text-white rounded-md z-40 pb-20 fixed h-[95vh] w-[95vw] sm:w-[90vw] sm:h-[95vh] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] overflow-y-auto max-h-screen"
       >
-        <div className="relative h-[510px]">
-          <div className="relative brightness-50 -z-10 overflow-hidden h-[510px]">
+        <div className="relative h-screen sm:h-[510px]">
+          <div className="relative brightness-50 -z-10 overflow-hidden h-screen sm:h-[510px]">
             <img
               alt="Backdrop_image"
               draggable={false}
@@ -110,32 +112,33 @@ const MoviePreviewModal = ({ closeModal, movieData }) => {
             />
           </div>
           <div className="bg-black/40 absolute top-0 z-10 h-full w-full"></div>
-          <div className="absolute top-10 grid grid-cols-12 w-full h-fit z-20">
-            <div className="col-span-3 relative left-5 justify-self-end">
+          <div className="absolute top-10 flex flex-col items-center justify-center sm:grid sm:grid-cols-12 w-full h-fit z-20">
+            <div className="sm:col-span-3 relative sm:left-5 sm:justify-self-end">
               <img
                 alt="Poster_image"
-                className="w-72 rounded-md"
+                className="w-40 sm:w-72 rounded-md"
                 src={POSTER_CDN_URL_HD + movieData?.poster_path}
               />
             </div>
-            <div className="col-span-9 pt-6 mx-14 h-fit text-left">
+            <div className="sm:col-span-9 pt-2 sm:pt-6 w-full sm:w-fit px-5 sm:px-0 sm:mx-14 h-fit text-center sm:text-left">
               <div className="flex flex-col gap-1">
                 <h1 className="select-none w-full cursor-default sm:text-4xl text-xl font-bold">
                   <span className="text-shadow ">{movieData?.title}</span>{" "}
-                  <span className="font-normal text-2xl text-gray-300">
+                  <span className="font-normal txt-xl sm:text-2xl text-gray-300">
                     ({movieData?.release_date.split("-")[0]})
                   </span>
                 </h1>
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-1 sm:gap-2 items-center sm:items-start justify-center sm:justify-start">
                   <p>
+                    <span className="sm:hidden">Release date : </span>{" "}
                     {movieData?.release_date.split("-").reverse().join("/")}
                   </p>
-                  <span>•</span>
+                  <span className="hidden sm:block">•</span>
                   <p>{genres ? genres.join(", ") : ""}</p>
                 </div>
               </div>
 
-              <div className="flex w-full flex-row items-center gap-5 mt-5">
+              <div className="flex w-full flex-row items-center justify-center sm:justify-start gap-5 mt-2 sm:mt-5">
                 <div className="flex items-center gap-1">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -167,7 +170,7 @@ const MoviePreviewModal = ({ closeModal, movieData }) => {
                 >
                   <div
                     onClick={handleWatchList}
-                    className="p-2 group active:scale-95 bg-white/30 backdrop-blur-sm cursor-pointer rounded-full"
+                    className="p-2 active:scale-95 bg-white/30 backdrop-blur-sm cursor-pointer rounded-full"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -179,7 +182,7 @@ const MoviePreviewModal = ({ closeModal, movieData }) => {
                         isBookmarked
                           ? "fill-yellow-400 stroke-yellow-400"
                           : "fill-white"
-                      } group-hover:fill-yellow-400 group-hover:stroke-yellow-400`}
+                      }`}
                     >
                       <path
                         strokeLinecap="round"
@@ -190,6 +193,7 @@ const MoviePreviewModal = ({ closeModal, movieData }) => {
                   </div>
                 </Tooltip>
                 <Snackbar
+                  anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                   open={openToast}
                   autoHideDuration={3000}
                   color={isBookmarked ? "success" : "danger"}
@@ -212,15 +216,15 @@ const MoviePreviewModal = ({ closeModal, movieData }) => {
                 <h3 className="pt-5 text-white text-xl font-semibold">
                   Overview
                 </h3>
-                <p className="select-none cursor-default hidden sm:block text-base pt-1">
+                <p className="select-none cursor-default text-sm text-balance sm:text-left sm:text-base pt-1">
                   {movieData?.overview}
                 </p>
               </div>
 
-              <div className="mt-2 sm:mt-5 flex flex-row gap-3">
+              <div className="mt-2 sm:mt-5 flex flex-row justify-center sm:justify-start gap-3">
                 <button
                   onClick={() => setOpen(true)}
-                  className=" bg-white flex flex-row p-1 sm:p-0 sm:px-8 sm:py-2 justify-center items-center gap-2 text-black text-xs font-bold sm:font-normal sm:text-lg rounded-md hover:bg-opacity-80"
+                  className=" bg-white flex flex-row px-8 py-2 justify-center items-center gap-2 text-black text-sm mt-2 sm:mt-0 font-bold sm:font-normal sm:text-lg rounded-md hover:bg-opacity-80"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -236,7 +240,7 @@ const MoviePreviewModal = ({ closeModal, movieData }) => {
                       d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z"
                     />
                   </svg>
-                  <span className="hidden sm:block">Play Trailer</span>
+                  <span>Play Trailer</span>
                 </button>
               </div>
             </div>
@@ -246,7 +250,7 @@ const MoviePreviewModal = ({ closeModal, movieData }) => {
             open={open}
             onClose={() => setOpen(false)}
           >
-            <div className="w-[80vw]">
+            <div className="w-screen sm:w-[80vw]">
               <ModalClose />
               <div>
                 <VideoBackground
@@ -259,27 +263,27 @@ const MoviePreviewModal = ({ closeModal, movieData }) => {
         </div>
         {castDetails && (
           <div>
-            <h1 className="mb-5 font-bold relative flex items-center mx-11 mt-5 z-30">
-              <span className="rounded-md text-2xl">Cast</span>
+            <h1 className="mb-5 font-bold relative flex items-center mx-5 sm:mx-11 mt-5 z-30">
+              <span className="rounded-md text-xl sm:text-2xl">Cast</span>
             </h1>
-            <div className="flex flex-row gap-4 custom-scrollbar overflow-x-scroll mx-11">
+            <div className="flex flex-row gap-4 custom-scrollbar overflow-x-scroll mx-5 sm:mx-11">
               {castDetails &&
                 castDetails.map((person, index) => {
                   if (person.profile_path && index < cast) {
                     return (
                       <div key={person.id} className="group">
-                        <div className="w-40 rounded-lg overflow-hidden">
+                        <div className="w-28 sm:w-40 rounded-lg overflow-hidden">
                           <img
                             draggable={false}
                             className="rounded-lg group-hover:scale-105 group-hover:brightness-75 transition duration-200 ease-in-out"
                             src={POSTER_CDN_URL + person.profile_path}
                           />
                         </div>
-                        <div className="py-1 -mt-12 bg-opacity-30 bg-black/30 backdrop-blur-md rounded-b-md mb-5">
-                          <p className="text-sm text-center font-medium">
+                        <div className="py-1 -mt-10 sm:-mt-12 bg-opacity-30 w-28 sm:w-40 overflow-hidden bg-black/30 backdrop-blur-md rounded-b-md mb-5">
+                          <p className="text-xs sm:text-sm truncate sm:h-auto text-center font-medium">
                             {person.original_name}
                           </p>
-                          <p className="text-center text-sm text-shadow text-gray-300 h-5 overflow-hidden">
+                          <p className="text-center text-xs sm:text-sm truncate text-shadow text-gray-300 h-5 overflow-hidden">
                             {person.character}
                           </p>
                         </div>
@@ -338,6 +342,25 @@ const MoviePreviewModal = ({ closeModal, movieData }) => {
           </div>
         )}
       </div>
+      <button
+        onClick={closeModal}
+        className="fixed z-40 flex justify-center py-2 bottom-0 sm:hidden font-bold text-white text-shadow border border-gray-600 backdrop-blur-sm bg-black bg-opacity-80 rounded-t-md w-screen text-sm"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={3}
+          stroke="currentColor"
+          className="w-7 h-7"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6 18 18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
     </>,
     modalRoot
   );

@@ -6,7 +6,7 @@ const SecondaryContainer = () => {
 
   return (
     <div className="bg-black">
-      <div className="-mt-[12%] sm:-mt-[20%] pt-5 sm:pt-0 text-white bg-gradient-to-t from-black relative z-20">
+      <div className="-mt-3 sm:-mt-[20%] sm:pt-0 text-white bg-gradient-to-t from-black relative ">
         <MovieCategory
           title={"Now Playing"}
           data={movieData.nowPlayingMovies}

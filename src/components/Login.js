@@ -135,7 +135,7 @@ const Login = () => {
       {/* form */}
       <form
         onSubmit={(e) => e.preventDefault()}
-        className="bg-black bg-opacity-75 flex rounded-[4px] flex-col sm:top-[25%] top-[20%] absolute z-20 m-auto w-auto sm:w-fit sm:px-16 px-10 pt-10 sm:pb-20 pb-16 items-left text-white"
+        className="bg-black bg-opacity-75 flex rounded-[4px] flex-col sm:top-[25%] top-[15%] absolute z-20 m-auto w-[98vw] sm:w-fit sm:px-16 px-10 pt-10 sm:pb-20 pb-16 items-left text-white"
       >
         <h1 className="mb-8 sm:text-3xl text-2xl cursor-default">
           {isSignInForm ? "Sign in" : "Sign up"}

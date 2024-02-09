@@ -55,7 +55,9 @@ const MovieCard = ({ title, movieData }) => {
           </svg>
         </div>
         {title === "Now Playing" ? (
-          ""
+          <p className="line-clamp-2 block sm:hidden max-h-10 sm:max-h-[50px] pb-5 text-xs sm:text-sm font-bold pt-2 pl-1 sm:pl-2">
+            {movieData?.title}
+          </p>
         ) : (
           <p className="line-clamp-2 max-h-10 sm:max-h-[50px] pb-5 text-xs sm:text-sm font-bold pt-2 pl-1 sm:pl-2">
             {movieData?.title}

@@ -36,7 +36,7 @@ const Browse = () => {
   );
 
   return (
-    <div>
+    <div className="bg-black">
       {!nowPlayingMovies && <Loader />}
       <Header />
       {toggleGptSearch ? (
