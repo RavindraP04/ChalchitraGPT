@@ -12,6 +12,7 @@ import { ModalClose, Tooltip } from "@mui/joy";
 import useMovieCast from "../Hooks/useMovieCast";
 import Snackbar from "@mui/joy/Snackbar";
 import { modalOpen } from "../utils/configSlice";
+import SimilarMovies from "./SimilarMovies";
 
 const MoviePreviewModal = ({ closeModal, movieData }) => {
   const [open, setOpen] = useState(false);
@@ -193,7 +194,7 @@ const MoviePreviewModal = ({ closeModal, movieData }) => {
                   </div>
                 </Tooltip>
                 <Snackbar
-                  anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
                   open={openToast}
                   autoHideDuration={3000}
                   color={isBookmarked ? "success" : "danger"}
@@ -341,6 +342,7 @@ const MoviePreviewModal = ({ closeModal, movieData }) => {
             </div>
           </div>
         )}
+        <SimilarMovies movie_id={movieData?.id}/>
       </div>
       <button
         onClick={closeModal}
