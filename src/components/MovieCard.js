@@ -1,43 +1,37 @@
 import { useState } from "react";
 import { POSTER_CDN_URL } from "../utils/constants";
 import MoviePreviewModal from "./MoviePreviewModal";
+import { Modal, ModalClose } from "@mui/joy";
 import { useDispatch } from "react-redux";
 import { modalOpen } from "../utils/configSlice";
+import noImage from "../assets/No-Image.png";
 
 const MovieCard = ({ title, movieData }) => {
-  const [showModal, setShowModal] = useState(false);
+  const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
 
   const handleCloseModal = () => {
     dispatch(modalOpen());
-    setShowModal(!showModal);
-    document.body.style.overflowY = "scroll";
+    setOpen(false);
   };
 
   const handleOpenModal = () => {
     dispatch(modalOpen());
-    setShowModal(!showModal);
-    document.body.style.overflowY = "hidden";
+    setOpen(true);
   };
 
   return (
     <div>
-      {showModal && (
-        <MoviePreviewModal
-          movieData={movieData}
-          closeModal={handleCloseModal}
-        />
-      )}
       <div
-        onClick={handleOpenModal}
+        onClick={title !== "similarMovies" ? handleOpenModal : null}
         className="w-24 cursor-pointer pb-3 sm:w-36 mr-4"
       >
         <div className="relative group hover:shadow-lg hover:shadow-white/40 rounded-lg overflow-hidden">
           <img
             alt="poster_image"
             draggable={false}
-            className="rounded-lg group-hover:brightness-75 group-hover:scale-105 transition duration-300 ease-in-out"
-            src={POSTER_CDN_URL + movieData?.poster_path}
+            className="rounded-lg group-hover:brightness-75 h-52 group-hover:scale-105 transition duration-300 ease-in-out"
+            src={movieData?.poster_path !== null ? POSTER_CDN_URL + movieData?.poster_path : noImage}
           />
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -64,6 +58,16 @@ const MovieCard = ({ title, movieData }) => {
           </p>
         )}
       </div>
+      <Modal
+        className="flex items-center justify-center"
+        open={open}
+        onClose={handleCloseModal}
+      >
+        <div>
+          <ModalClose />
+          <MoviePreviewModal movieData={movieData} />
+        </div>
+      </Modal>
     </div>
   );
 };

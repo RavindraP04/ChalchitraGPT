@@ -27,34 +27,24 @@ const VideoTitle = ({ movie, overview, title }) => {
 
   const handleCloseModal = () => {
     dispatch(modalOpen());
-    setShowModal(!showModal);
-    document.body.style.overflowY = "scroll";
+    setShowModal(false);
   };
 
   const handleOpenModal = () => {
     dispatch(modalOpen());
-    setShowModal(!showModal);
-    document.body.style.overflowY = "hidden";
+    setShowModal(true);
   };
 
   return (
     <>
-      {showModal && (
-        <MoviePreviewModal
-          movieData={movie}
-          id={id}
-          closeModal={handleCloseModal}
-        />
-      )}
-      <div className="w-full aspect-video absolute sm:pt-[22%] pt-[33%] sm:pl-14 pl-5 bg-gradient-to-r from-[#000000ae] text-white">
+      <div className="w-full aspect-video absolute sm:pt-[23%] pt-[33%] sm:pl-14 pl-5 bg-gradient-to-r from-[#000000ae] text-white">
         <h1
           className={`text-shadow select-none cursor-default sm:text-5xl text-xl font-bold`}
         >
           {title}
         </h1>
-        <p className="select-none cursor-default w-[40%] h-[120px] overflow-hidden hidden text-balance sm:block text-base pt-5">
-        While the Second World War rages, the teenage Mahito, haunted by his mother's tragic death, is relocated from Tokyo to the serene rural home of his new stepmother Natsuko, a woman who bears a striking resemblance to the boy's mother. As he tries to adjust, this strange new world grows even stranger following the appearance of a persistent gray heron, who perplexes and bedevils Mahito, dubbing him the "long-awaited one."
-          {/* {overview} */}
+        <p className="select-none cursor-default w-[40%] max-h-[120px] overflow-hidden hidden text-balance sm:block text-base pt-5">
+          {overview}
         </p>
         <div className="mt-1 sm:mt-3 flex flex-row items-center justify-between">
           <div className="flex flex-row gap-3">
@@ -152,6 +142,16 @@ const VideoTitle = ({ movie, overview, title }) => {
           </div>
         </Modal>
       </div>
+      <Modal
+        className="flex items-center justify-center"
+        open={showModal}
+        onClose={handleCloseModal}
+      >
+        <div>
+          <ModalClose />
+          <MoviePreviewModal movieData={movie} />
+        </div>
+      </Modal>
     </>
   );
 };

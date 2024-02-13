@@ -125,9 +125,9 @@ const Login = () => {
     <div className="relative flex justify-center items-center h-screen">
       {isLoading && <Loader />}
       <Header />
-      <div className="brightness-50 fixed -z-10 overflow-hidden">
+      <div className="brightness-50 blur-sm fixed -z-10 overflow-hidden">
         <img
-          className="h-screen sm:w-screen object-cover"
+          className="h-screen sm:w-screen border-image-clip-path object-cover"
           src={LoginBg}
           alt="background_Image"
         />
@@ -180,7 +180,7 @@ const Login = () => {
         )}
         <p className="mt-10">
           <span className="text-gray-400 cursor-default">
-            {isSignInForm ? "New to Netflix?" : "Already Registered?"}
+            {isSignInForm ? "New to Chalchitra?" : "Already Registered?"}
           </span>{" "}
           <span className="cursor-pointer" onClick={handleSignInSignUp}>
             {isSignInForm ? "Sign up now." : "Sign in now."}
