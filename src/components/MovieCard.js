@@ -24,7 +24,7 @@ const MovieCard = ({ title, movieData }) => {
     <div>
       <div
         onClick={title !== "similarMovies" ? handleOpenModal : null}
-        className="w-24 cursor-pointer pb-3 sm:w-36 mr-4"
+        className="w-32 cursor-pointer pb-3 sm:w-36 mr-4"
       >
         <div className="relative group hover:shadow-lg hover:shadow-white/40 rounded-lg overflow-hidden">
           <img
