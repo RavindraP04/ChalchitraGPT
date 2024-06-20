@@ -97,8 +97,8 @@ const Login = () => {
 
   const handleTestCredentials = () => {
     setIsLoading(true);
-    const testEmail = "bohotKhaasLog@gmail.com";
-    const testPassword = "bohotKhaasLog@123";
+    const testEmail = "ravindra.official4702@gmail.com";
+    const testPassword = "Ravindra@123";
 
     email.current.value = null;
     password.current.value = null;

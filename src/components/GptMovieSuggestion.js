@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import MovieCard from "./MovieCard";
 import lang from "../utils/languageConstants";
 

@@ -22,27 +22,30 @@ const useMovieSearch = (dispatch) => {
 
       const gptQuery = `Act as a Movie Recommendation system and suggest some movies for the query: ${userInputValue}. Only give me names of 7 movies with its release year, comma separated like the example result given ahead. Example Result: Gadar-2002, Sholay-2003, Don-2004, Golmaal-2005, Koi Mil Gaya-2006, for any reason if you can't suggest movies then just reply "sorrybro"`;
 
-      let gptResponse = "";
+      // let gptResponse = "";
       let geminiResponse = "";
       try {
-        const responseList = await openai.chat.completions.create({
-          messages: [{ role: "user", content: gptQuery }],
-          model: "gpt-3.5-turbo",
-        });
+        // const responseList = await openai.chat.completions.create({
+        //   messages: [{ role: "user", content: gptQuery }],
+        //   model: "gpt-3.5-turbo",
+        // });
 
-        gptResponse = responseList.choices?.[0]?.message?.content;
+        // gptResponse = responseList.choices?.[0]?.message?.content;
 
         //GEMINI AI FETCHING START
-        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash"});
         const result = await model.generateContent(gptQuery);
-        const response = await result.response;
+        const response = result.response;
         geminiResponse = response.text();
+        console.log(geminiResponse);
         //GEMINI AI FETCHING END
       } catch (error) {
+        console.log("Errrrr" + error);
         dispatch(changeGif(idk));
       }
 
-      let GptMovieResult = (geminiResponse + ", " + gptResponse).split(", ");
+      // let GptMovieResult = (geminiResponse + ", " + gptResponse).split(", ");
+      let GptMovieResult = (geminiResponse).split(", ");
       let set = new Set(GptMovieResult);
       set.delete('')
       GptMovieResult = Array.from(set).map((ele) => (ele = ele.split("-")));
