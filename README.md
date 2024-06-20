@@ -1,6 +1,6 @@
 Developed & deployed AI-powered movie recommendation system: Implemented personalized suggestions using GPT-3.5 & Gemini Pro. Built a user-friendly UI with React.js, state management with Redux, and utilized Material UI components for seamless design. Deployed on Firebase for accessibility. 
 
-# Netflix GPT
+# Chalchitra GPT
 
 - 19th Jan 2024
     - Create React App
